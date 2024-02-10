@@ -1,4 +1,6 @@
+tqdm
 torch
 torchvision
 opacus
-flwr
+flwr[simulation]
+click
