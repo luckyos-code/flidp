@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader, random_split
 from torchvision.datasets import CIFAR10
 
 
-def load_datasets(dataset_chache: str, client_sizes: List[float], val_size: float = 0.1):
+def load_datasets(dataset_chache: str, client_sizes: List[float], val_size: float = 0.1, batch_size: int = 4):
     transform = transforms.Compose(
         [
             transforms.ToTensor(), 
@@ -27,7 +27,7 @@ def load_datasets(dataset_chache: str, client_sizes: List[float], val_size: floa
         len_train = len(ds) - len_val
         lengths = [len_train, len_val]
         ds_train, ds_val = random_split(ds, lengths, torch.Generator().manual_seed(42))
-        trainloaders.append(DataLoader(ds_train, batch_size=32, shuffle=True))
-        valloaders.append(DataLoader(ds_val, batch_size=32))
-    testloader = DataLoader(testset, batch_size=32)
+        trainloaders.append(DataLoader(ds_train, batch_size=batch_size, shuffle=True))
+        valloaders.append(DataLoader(ds_val, batch_size=batch_size))
+    testloader = DataLoader(testset, batch_size=batch_size)
     return trainloaders, valloaders, testloader
