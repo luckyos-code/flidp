@@ -2,6 +2,7 @@ FROM nvidia/cuda:12.2.2-runtime-ubuntu22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
+  build-essential \
   wget \
   git \
   curl \
@@ -9,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get update && apt-get install -y --no-install-recommends \
-  python3.11 \
+  python3.11-dev \
   python3.11-distutils
 
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1
