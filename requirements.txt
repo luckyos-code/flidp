@@ -1,5 +1,5 @@
 pandas
 dp-accounting
-tensorflow
+tensorflow[and-cuda]
 tensorflow-federated==0.73.0
 tensorflow-privacy

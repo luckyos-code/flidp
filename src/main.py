@@ -136,6 +136,7 @@ def train(train_data, test_data, client_sampling_rates, rounds, noise_multiplier
 
 
 if __name__ == '__main__':
+    print("STARTING PYTON MAIN SCRIPT")
     train_ds, test_ds = get_emnist_dataset()
     budgets = np.array([1.0, 1.0, 1.0])
     budget_ratios = np.array([.34, .43, .23])

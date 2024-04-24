@@ -7,8 +7,6 @@ from dp_accounting.dp_event import PoissonSampledDpEvent, GaussianDpEvent, SelfC
 from dp_accounting import calibrate_dp_mechanism
 from dp_accounting.privacy_accountant import PrivacyAccountant
 
-import sample_old
-
 MAX_SIGMA = 1e6
 MIN_Q = 1e-9
 MAX_Q = 0.1
@@ -160,6 +158,7 @@ def get_weights(
 
 
 if __name__ == "__main__":
+    import sample_old
     target_epsilon = 2.0
     target_delta = 1e-5
     noise_multiplier = 1.5
