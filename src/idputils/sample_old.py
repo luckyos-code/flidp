@@ -1,42 +1,52 @@
-from typing import Optional, List
-
+from typing import Literal
 import numpy as np
-from numpy import ndarray
-from opacus.accountants.utils import get_noise_multiplier
 
+from dp_accounting.rdp import RdpAccountant
+from dp_accounting.dp_event import PoissonSampledDpEvent, GaussianDpEvent, SelfComposedDpEvent
 
+MAX_SIGMA = 1e6
 MIN_Q = 1e-9
 MAX_Q = 0.1
 
 
-def get_noise_multipliers(
-    target_epsilons: List[float],
-    target_delta: float,
-    sample_rate: float,
-    steps: int,
-    accountant: str = "rdp",
-    precision: float = 0.001,
-    **kwargs,
-) -> List[float]:
-    return [get_noise_multiplier(
-        target_epsilon=budget,
-        target_delta=target_delta,
-        sample_rate=sample_rate,
-        steps=steps,
-        accountant=accountant,
-        precision=precision,
-        **kwargs,
-    ) for budget in target_epsilons]
+# def create_dp_event(noise_multiplier: float, q: float, steps: int):
+#     g_ev = GaussianDpEvent(noise_multiplier)
+#     p_ev = PoissonSampledDpEvent(sampling_probability=q, event=g_ev)
+#     c_ev = SelfComposedDpEvent(p_ev, steps)
+#     return c_ev
+#
+#
+# def get_epsilon(composed_dp_event: SelfComposedDpEvent, target_delta: float, accountant_type: Literal["rdp"] = "rdp") -> float:
+#     if accountant_type == "rdp":
+#         accountant = RdpAccountant()
+#     else:
+#         raise NotImplementedError("Unknown accountant")
+#
+#     accountant.compose(composed_dp_event)
+#
+#     return accountant.get_epsilon(target_delta=target_delta)
+
+
+def get_epsilon(noise_multiplier: float, q: float, steps: int, target_delta: float, accountant_type: Literal["rdp"] = "rdp") -> float:
+    if accountant_type == "rdp":
+        accountant = RdpAccountant()
+    else:
+        raise NotImplementedError("Unknown accountant")
+
+    g_ev = GaussianDpEvent(noise_multiplier)
+    p_ev = PoissonSampledDpEvent(sampling_probability=q, event=g_ev)
+    accountant.compose(p_ev, count=steps)
+
+    return accountant.get_epsilon(target_delta=target_delta)
 
 
 def get_sample_rate(
-    target_epsilon: float,
-    target_delta: float,
-    noise_multiplier: float,
-    steps: int,
-    accountant: str = "rdp",
-    precision: float = 0.001,
-    **kwargs,
+        target_epsilon: float,
+        target_delta: float,
+        noise_multiplier: float,
+        steps: int,
+        precision: float = 0.001,
+        **kwargs,
 ) -> float:
     r"""
     Computes via binary search the sampling frequency q to reach a total budget
@@ -53,26 +63,21 @@ def get_sample_rate(
         The sampling frequency q to ensure privacy budget of
         (target_epsilon, target_delta)
     """
-    accountant = create_accountant(mechanism=accountant)
     q_low, q_high = MIN_Q, MAX_Q
-    accountant.history = [(noise_multiplier, q_low, steps)]
-    eps_low = accountant.get_epsilon(delta=target_delta, **kwargs)
+    eps_low = get_epsilon(noise_multiplier=noise_multiplier, q=q_low, steps=steps, target_delta=target_delta)
     if eps_low > target_epsilon:
         raise ValueError("The privacy budget is too low.")
-    accountant.history = [(noise_multiplier, q_high, steps)]
-    eps_high = accountant.get_epsilon(delta=target_delta, **kwargs)
-    while eps_high < 0:     # decrease q_high whenever a numerical error happens
+    eps_high = get_epsilon(noise_multiplier=noise_multiplier, q=q_high, steps=steps, target_delta=target_delta)
+    while eps_high < 0:  # decrease q_high whenever a numerical error happens
         q_high *= 0.9
-        accountant.history = [(noise_multiplier, q_high, steps)]
-        eps_high = accountant.get_epsilon(delta=target_delta, **kwargs)
+        eps_high = get_epsilon(noise_multiplier=noise_multiplier, q=q_high, steps=steps, target_delta=target_delta)
     if eps_high < target_epsilon:
         raise ValueError(f"The given noise_multiplier {noise_multiplier} is "
                          f"too high.")
 
     while q_low / q_high < 1 - precision:
         q = (q_low + q_high) / 2
-        accountant.history = [(noise_multiplier, q, steps)]
-        eps = accountant.get_epsilon(delta=target_delta, **kwargs)
+        eps = get_epsilon(noise_multiplier=noise_multiplier, q=q, steps=steps, target_delta=target_delta)
         if eps < target_epsilon:
             q_low = q
         else:
@@ -82,15 +87,14 @@ def get_sample_rate(
 
 
 def get_sample_rates(
-    ratios: List[float],
-    target_epsilons: List[float],
+    ratios: list[float],
+    target_epsilons: list[float],
     target_delta: float,
     default_sample_rate: float,
     steps: int,
-    accountant: str = "rdp",
     precision: float = 0.001,
     **kwargs,
-) -> (float, ndarray):
+) -> (float, np.ndarray):
     r"""
     Computes via nested binary search the sampling frequency q for each privacy
     group to reach a total budget of (target_epsilon, target_delta) at the end
@@ -107,21 +111,18 @@ def get_sample_rates(
         The noise level sigma, and each a sampling frequency q for each privacy
         group to ensure privacy budgets of target_epsilons with target_delta
     """
-    mechanism = accountant
+    assert len(ratios) == len(target_epsilons), f"ratios and target_epsilons must have the same length"
     n_groups = len(ratios)
     ratios = np.asarray(ratios)
     sigma_low, sigma_high = 1e-3, 10
     for group, target_epsilon in enumerate(target_epsilons):
         eps_high = float("inf")
-        accountant = create_accountant(mechanism=mechanism)
         sigma_high_group = 10
         while eps_high > target_epsilon:
             sigma_high_group = 2 * sigma_high_group
             if sigma_high_group > sigma_high:
                 sigma_high = sigma_high_group
-            accountant.history = [
-                (sigma_high_group, default_sample_rate, steps)]
-            eps_high = accountant.get_epsilon(delta=target_delta, **kwargs)
+            eps_high = get_epsilon(noise_multiplier=sigma_high_group, q=default_sample_rate, steps=steps, target_delta=target_delta)
             if sigma_high_group > MAX_SIGMA:
                 raise ValueError(f"The privacy budget ({target_epsilon}) of"
                                  f"group {group} is too low.")
@@ -138,7 +139,6 @@ def get_sample_rates(
                     target_delta=target_delta,
                     noise_multiplier=sigma,
                     steps=steps,
-                    accountant=mechanism,
                     precision=precision,
                     **kwargs,
                 )
@@ -158,16 +158,13 @@ def get_sample_rates(
 
 
 def get_weights(
-    pp_budgets: ndarray,
+    pp_budgets: np.ndarray,
     target_delta: float,
-    default_max_grad_norm: float,
     default_sample_rate: float,
     steps: int,
-    individualize: str,
-    accountant: str = "rdp",
     precision: float = 0.001,
     **kwargs,
-) -> (float, List[float]):
+) -> (float, list[float]):
     r"""
     Computes max_grad_norms from given default_max_grad_norm (in case of
     individualize=="clipping") or sample_rates (in case of
@@ -179,7 +176,6 @@ def get_weights(
         default_max_grad_norm: average clipping threshold over privacy groups
         default_sample_rate: sampling frequency to achieve expected_batch_size
         steps: number of steps to run
-        individualize: kind of (i)DP-SGD to individualize privacy protection
         accountant: accounting mechanism used to estimate epsilon
         precision: relation between limits of binary search interval
     Returns:
@@ -189,50 +185,18 @@ def get_weights(
     """
     budgets = list(np.sort(np.unique(pp_budgets)))
     ratios = [sum(pp_budgets == b) / len(pp_budgets) for b in budgets]
-    if individualize == "clipping":
-        noise_multipliers = get_noise_multipliers(
-            target_epsilons=budgets,
-            target_delta=target_delta,
-            sample_rate=default_sample_rate,
-            steps=steps,
-            accountant=accountant,
-            precision=precision,
-            **kwargs,
-        )
-        average_noise_multiplier = sum(np.asarray(noise_multipliers)
-                                       * np.asarray(ratios))
-        clip_scalars = average_noise_multiplier / np.asarray(noise_multipliers)
-        max_grad_norms = default_max_grad_norm * clip_scalars
-        return average_noise_multiplier, list(max_grad_norms)
-    elif individualize == "sampling":
-        return get_sample_rates(
-            ratios=ratios,
-            target_epsilons=budgets,
-            target_delta=target_delta,
-            default_sample_rate=default_sample_rate,
-            steps=steps,
-            accountant=accountant,
-            precision=precision,
-            **kwargs,
-        )
-    else:
-        raise ValueError("individualize must be 'clipping' or 'sampling'!")
 
+    noise_multiplier, qs_per_budget = get_sample_rates(
+        ratios=ratios,
+        target_epsilons=budgets,
+        target_delta=target_delta,
+        default_sample_rate=default_sample_rate,
+        steps=steps,
+        precision=precision,
+    )
 
-def assign_pp_values(
-    pp_budgets: ndarray,
-    values: List[float],
-) -> ndarray:
-    r"""
-    Assigns a value to each data point according to the given per-point budgets.
-    Args:
-        pp_budgets: the privacy budget's epsilon for each data point
-        values: list of values to be assigned to all data points
-    Returns:
-        An array of size equal to the training dataset size that contains one
-        value for each data point.
-    """
-    pp_values = np.zeros(len(pp_budgets))
-    for i, budget in enumerate(np.sort(np.unique(pp_budgets))):
-        pp_values[pp_budgets == budget] = values[i]
-    return pp_values
+    # qs_per_client = np.zeros(shape=pp_budgets.shape)
+    # for b, q in zip(budgets, qs_per_budget):
+    #     qs_per_client[pp_budgets == b] = q
+
+    return noise_multiplier, qs_per_budget

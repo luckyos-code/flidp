@@ -1,6 +1,5 @@
-tqdm
-torch
-torchvision
-opacus
-flwr[simulation]
-click
+pandas
+dp-accounting
+tensorflow
+tensorflow-federated==0.73.0
+tensorflow-privacy
