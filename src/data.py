@@ -19,7 +19,6 @@ def load_datasets(dataset_chache: str, client_sizes: List[float], val_size: floa
 
     client_sizes = [int(len(trainset) * cs) for cs in client_sizes]
     datasets = random_split(trainset, client_sizes, torch.Generator().manual_seed(42))
-
     trainloaders = []
     valloaders = []
     for ds in datasets:
@@ -28,6 +27,6 @@ def load_datasets(dataset_chache: str, client_sizes: List[float], val_size: floa
         lengths = [len_train, len_val]
         ds_train, ds_val = random_split(ds, lengths, torch.Generator().manual_seed(42))
         trainloaders.append(DataLoader(ds_train, batch_size=batch_size, shuffle=True))
-        valloaders.append(DataLoader(ds_val, batch_size=batch_size))
-    testloader = DataLoader(testset, batch_size=batch_size)
+        valloaders.append(DataLoader(ds_val, batch_size=batch_size, shuffle=False))
+    testloader = DataLoader(testset, batch_size=batch_size, shuffle=False)
     return trainloaders, valloaders, testloader

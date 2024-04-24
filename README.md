@@ -5,7 +5,7 @@
 To interactively allocate resources use `salloc`, e.g.
 
 ```
-salloc -N 1 -p clara --gres=gpu:v100:1
+salloc -N 1 -p clara --gres=gpu:v100:1 --mem=64G --cpus-per-task=16
 ```
 
 Then run any command with `srun`. To free the resources type `exit` or cancel the job via `scancel`.

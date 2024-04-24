@@ -14,4 +14,10 @@ def main(clients, cpus, dataset_cache):
     )
 
 if __name__ == "__main__":
-    main()
+    print("start!")
+    from dputils import get_noise_multipliers
+
+    epsilons = [0.1, 0.1, 1.0, 0.5]
+    delta = 1e-5
+    print("START")
+    print(get_noise_multipliers(target_epsilons=epsilons, target_delta=delta, sample_rate=1e-5, steps=30_000))
