@@ -1,5 +1,13 @@
 # Federated Learning with Individualized Differential Privacy
 
+## Sync files to the cluster
+
+```
+rsync -avu . oe152msue@login01.sc.uni-leipzig.de:~/flidp
+```
+
+Add `--delete` as option to delete files that do not exist in the source directory.
+
 ## Resource Access on Cluster
 
 To interactively allocate resources use `salloc`, e.g.
