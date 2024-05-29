@@ -6,3 +6,4 @@ import tensorflow as tf
 import tensorflow_federated as tff
 
 from .emnist import run_emnist
+from .svhn import run_svhn
