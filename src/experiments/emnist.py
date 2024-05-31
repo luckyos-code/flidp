@@ -3,7 +3,7 @@ from pathlib import Path
 from . import *
 from .helpers import create_budgets, get_sampling_rates_per_client
 from idputils import get_weights
-from train import train, save_train_results
+from train import train_without_dp, train_with_idp, save_train_results
 
 EMNIST_DELTA = 1e-5
 EMNIST_ROUNDS = 100
@@ -25,7 +25,7 @@ def _get_dataset(only_digits) -> Tuple[tff.simulation.datasets.ClientData, tff.s
             .map(element_fn)
             .shuffle(buffer_size=418)
             .repeat(1)
-            .batch(32, drop_remainder=False)
+            .batch(128, drop_remainder=False)
         )
 
     def preprocess_test_dataset(dataset):
@@ -44,7 +44,7 @@ def _get_model(input_spec) -> tff.learning.models.VariableModel:
         tf.keras.layers.Reshape(input_shape=(28, 28, 1), target_shape=(28 * 28,)),
         tf.keras.layers.Dense(200, activation=tf.nn.relu),
         tf.keras.layers.Dense(200, activation=tf.nn.relu),
-        tf.keras.layers.Dense(10)
+        tf.keras.layers.Dense(10),
     ])
     return tff.learning.models.from_keras_model(
         keras_model=model,
@@ -54,38 +54,57 @@ def _get_model(input_spec) -> tff.learning.models.VariableModel:
     )
 
 
-def run_emnist(save_dir, budgets, budget_ratios):
-    train_ds, test_ds = _get_dataset(only_digits=True)
-    budgets_per_client = create_budgets(
-        num_clients=len(train_ds.client_ids),
-        possible_budgets=budgets,
-        budget_ratios=budget_ratios,
-    )
-    noise_multiplier, qs_per_budget = get_weights(
-        pp_budgets=budgets_per_client,
-        target_delta=EMNIST_DELTA,
-        default_sample_rate=EMNIST_CLIENTS_PER_ROUND / len(train_ds.client_ids),
-        steps=EMNIST_ROUNDS,
-    )
-
-    client_sampling_rates = get_sampling_rates_per_client(
-        budgets_per_client=budgets_per_client, 
-        budgets=budgets, 
-        sampling_rates_per_budget=qs_per_budget
-    )
-
+def run_emnist(save_dir, budgets, budget_ratios, dp_level):
     def model_fn():
         return _get_model(test_ds.element_spec)
+    
+    train_ds, test_ds = _get_dataset(only_digits=True)
+    client_optimizer_fn = lambda: tf.keras.optimizers.SGD(0.01)
+    server_optimizer_fn = lambda: tf.keras.optimizers.SGD(1.0, momentum=0.9)
 
-    trained_weights, train_history = train(
-        model_fn=model_fn,
-        train_data=train_ds,
-        test_data=test_ds,
-        client_sampling_rates=client_sampling_rates,
-        rounds=EMNIST_ROUNDS,
-        noise_multiplier=noise_multiplier,
-        clients_per_round=EMNIST_CLIENTS_PER_ROUND,
-    )
+    trained_weights, train_history = None, None
+    if dp_level == 'idp':
+        budgets_per_client = create_budgets(
+            num_clients=len(train_ds.client_ids),
+            possible_budgets=budgets,
+            budget_ratios=budget_ratios,
+        )
+        noise_multiplier, qs_per_budget = get_weights(
+            pp_budgets=budgets_per_client,
+            target_delta=EMNIST_DELTA,
+            default_sample_rate=EMNIST_CLIENTS_PER_ROUND / len(train_ds.client_ids),
+            steps=EMNIST_ROUNDS,
+        )
 
+        client_sampling_rates = get_sampling_rates_per_client(
+            budgets_per_client=budgets_per_client, 
+            budgets=budgets, 
+            sampling_rates_per_budget=qs_per_budget
+        )
+
+        trained_weights, train_history = train_with_idp(
+            model_fn=model_fn,
+            client_optimizer_fn=client_optimizer_fn,
+            server_optimizer_fn=server_optimizer_fn,
+            train_data=train_ds,
+            test_data=test_ds,
+            client_sampling_rates=client_sampling_rates,
+            rounds=EMNIST_ROUNDS,
+            noise_multiplier=noise_multiplier,
+            clients_per_round=EMNIST_CLIENTS_PER_ROUND,
+        )
+
+    elif dp_level == 'nodp':
+        trained_weights, train_history = train_without_dp(
+            model_fn=model_fn,
+            client_optimizer_fn=client_optimizer_fn,
+            server_optimizer_fn=server_optimizer_fn,
+            train_data=train_ds,
+            test_data=test_ds,
+            rounds=EMNIST_ROUNDS,
+            clients_per_round=EMNIST_CLIENTS_PER_ROUND,    
+        )
+    else:
+        raise NotImplementedError(f"dp_level {dp_level} is not available")
     Path(save_dir).mkdir(parents=True)
     save_train_results(save_dir, trained_weights, train_history)

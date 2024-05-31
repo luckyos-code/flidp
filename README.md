@@ -13,8 +13,10 @@ Add `--delete` as option to delete files that do not exist in the source directo
 To interactively allocate resources use `salloc`, e.g.
 
 ```
-salloc -N 1 -p clara --gres=gpu:v100:1 --mem=64G --cpus-per-task=16
+salloc -N 1 -p clara --gres=gpu:rtx2080ti:1 --mem=32G --cpus-per-task=8
 ```
+
+Possible GPU choices are `gpu:rtx2080ti:1` and `gpu:v100:1`
 
 Then run any command with `srun`. To free the resources type `exit` or cancel the job via `scancel`.
 

@@ -4,15 +4,14 @@ from pathlib import Path
 
 import numpy as np
 import tensorflow as tf
-import tensorflow_datasets as tfds
 import tensorflow_federated as tff
 
 from .helpers import create_budgets, get_sampling_rates_per_client
 from idputils import get_weights
-from train import train, save_train_results, sample_clients
+from train import train_without_dp, train_with_idp, save_train_results
 
 SVHN_DIR = os.path.join(os.path.expanduser("~"), ".tff/svhn")
-SVHN_CLIENTS_PER_ROUND = 100
+SVHN_CLIENTS_PER_ROUND = 50
 SVHN_ROUNDS = 100
 SVHN_DELTA = 1e-4  # I created the dataset with 725 clients
 
@@ -41,11 +40,11 @@ def _get_dataset():
             .map(element_fn)
             .shuffle(buffer_size=138)
             .repeat(1)
-            .batch(32, drop_remainder=False)
+            .batch(512, drop_remainder=False)
         )
 
     def preprocess_test_dataset(dataset):
-        return dataset.map(element_fn).batch(128, drop_remainder=False)
+        return dataset.map(element_fn).batch(512, drop_remainder=False)
 
     svhn_train = train_ds.preprocess(preprocess_train_dataset)
     svhn_test = preprocess_test_dataset(
@@ -70,38 +69,56 @@ def _get_model(input_spec):
     )
 
 
-def run_svhn(save_dir, budgets, budget_ratios):
-    train_ds, test_ds = _get_dataset()
-    budgets_per_client = create_budgets(
-        num_clients=len(train_ds.client_ids),
-        possible_budgets=budgets,
-        budget_ratios=budget_ratios,
-    )
-    noise_multiplier, qs_per_budget = get_weights(
-        pp_budgets=budgets_per_client,
-        target_delta=SVHN_DELTA,
-        default_sample_rate=SVHN_CLIENTS_PER_ROUND / len(train_ds.client_ids),
-        steps=SVHN_ROUNDS,
-    )
-
-    client_sampling_rates = get_sampling_rates_per_client(
-        budgets_per_client=budgets_per_client, 
-        budgets=budgets, 
-        sampling_rates_per_budget=qs_per_budget
-    )
-
+def run_svhn(save_dir, budgets, budget_ratios, dp_level):
     def model_fn():
         return _get_model(test_ds.element_spec)
 
-    trained_weights, train_history = train(
-        model_fn=model_fn,
-        train_data=train_ds,
-        test_data=test_ds,
-        client_sampling_rates=client_sampling_rates,
-        rounds=SVHN_ROUNDS,
-        noise_multiplier=noise_multiplier,
-        clients_per_round=SVHN_CLIENTS_PER_ROUND,
-    )
+    train_ds, test_ds = _get_dataset()
+    client_optimizer_fn = lambda: tf.keras.optimizers.Adam(1e-3)
+    server_optimizer_fn = lambda: tf.keras.optimizers.SGD(1.0, momentum=0.9)
+    
+    trained_weights, train_history = None, None
+    if dp_level == 'idp':
+        budgets_per_client = create_budgets(
+            num_clients=len(train_ds.client_ids),
+            possible_budgets=budgets,
+            budget_ratios=budget_ratios,
+        )
+        noise_multiplier, qs_per_budget = get_weights(
+            pp_budgets=budgets_per_client,
+            target_delta=SVHN_DELTA,
+            default_sample_rate=SVHN_CLIENTS_PER_ROUND / len(train_ds.client_ids),
+            steps=SVHN_ROUNDS,
+        )
+
+        client_sampling_rates = get_sampling_rates_per_client(
+            budgets_per_client=budgets_per_client, 
+            budgets=budgets, 
+            sampling_rates_per_budget=qs_per_budget
+        )
+
+        trained_weights, train_history = train_with_idp(
+            model_fn=model_fn,
+            client_optimizer_fn=client_optimizer_fn,
+            server_optimizer_fn=server_optimizer_fn,
+            train_data=train_ds,
+            test_data=test_ds,
+            client_sampling_rates=client_sampling_rates,
+            rounds=SVHN_ROUNDS,
+            noise_multiplier=noise_multiplier,
+            clients_per_round=SVHN_CLIENTS_PER_ROUND,
+        )
+    
+    elif dp_level == 'nodp':
+        trained_weights, train_history = train_without_dp(
+            model_fn=model_fn,
+            client_optimizer_fn=client_optimizer_fn,
+            server_optimizer_fn=server_optimizer_fn,
+            train_data=train_ds,
+            test_data=test_ds,
+            rounds=SVHN_ROUNDS,
+            clients_per_round=SVHN_CLIENTS_PER_ROUND,    
+        )
 
     Path(save_dir).mkdir(parents=True)
     save_train_results(save_dir, trained_weights, train_history)
