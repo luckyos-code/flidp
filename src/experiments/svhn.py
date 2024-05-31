@@ -12,8 +12,9 @@ from train import train_without_dp, train_with_idp, save_train_results
 
 SVHN_DIR = os.path.join(os.path.expanduser("~"), ".tff/svhn")
 SVHN_CLIENTS_PER_ROUND = 50
-SVHN_ROUNDS = 100
+SVHN_ROUNDS = 200
 SVHN_DELTA = 1e-4  # I created the dataset with 725 clients
+SVHN_LOCAL_EPOCHS = 3
 
 def _load_svhn():
     svhn_spec = {
@@ -39,7 +40,7 @@ def _get_dataset():
             dataset
             .map(element_fn)
             .shuffle(buffer_size=138)
-            .repeat(1)
+            .repeat(SVHN_LOCAL_EPOCHS)
             .batch(512, drop_remainder=False)
         )
 
@@ -56,10 +57,16 @@ def _get_dataset():
 
 def _get_model(input_spec):
     model = tf.keras.models.Sequential([
-        tf.keras.layers.Reshape(input_shape=(32, 32, 3), target_shape=(32 * 32 * 3,)),
-        tf.keras.layers.Dense(200, activation=tf.nn.relu),
-        tf.keras.layers.Dense(200, activation=tf.nn.relu),
-        tf.keras.layers.Dense(10)
+        tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+        tf.keras.layers.Dropout(0.1),
+        tf.keras.layers.Conv2D(32, (3, 3), activation='relu'),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+        tf.keras.layers.Dropout(0.1),
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(64, activation=tf.nn.relu),
+        tf.keras.layers.Dropout(0.1),
+        tf.keras.layers.Dense(10),
     ])
     return tff.learning.models.from_keras_model(
         keras_model=model,
@@ -74,7 +81,7 @@ def run_svhn(save_dir, budgets, budget_ratios, dp_level):
         return _get_model(test_ds.element_spec)
 
     train_ds, test_ds = _get_dataset()
-    client_optimizer_fn = lambda: tf.keras.optimizers.Adam(1e-3)
+    client_optimizer_fn = lambda: tf.keras.optimizers.Adam(5e-4)
     server_optimizer_fn = lambda: tf.keras.optimizers.SGD(1.0, momentum=0.9)
     
     trained_weights, train_history = None, None

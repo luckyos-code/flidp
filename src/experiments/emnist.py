@@ -8,6 +8,7 @@ from train import train_without_dp, train_with_idp, save_train_results
 EMNIST_DELTA = 1e-5
 EMNIST_ROUNDS = 100
 EMNIST_CLIENTS_PER_ROUND = 100
+EMNIST_LOCAL_EPOCHS = 3
 
 
 def _get_dataset(only_digits) -> Tuple[tff.simulation.datasets.ClientData, tff.simulation.datasets.ClientData]:
@@ -24,7 +25,7 @@ def _get_dataset(only_digits) -> Tuple[tff.simulation.datasets.ClientData, tff.s
             dataset
             .map(element_fn)
             .shuffle(buffer_size=418)
-            .repeat(1)
+            .repeat(EMNIST_LOCAL_EPOCHS)
             .batch(128, drop_remainder=False)
         )
 
@@ -41,9 +42,15 @@ def _get_dataset(only_digits) -> Tuple[tff.simulation.datasets.ClientData, tff.s
 
 def _get_model(input_spec) -> tff.learning.models.VariableModel:
     model = tf.keras.models.Sequential([
-        tf.keras.layers.Reshape(input_shape=(28, 28, 1), target_shape=(28 * 28,)),
-        tf.keras.layers.Dense(200, activation=tf.nn.relu),
-        tf.keras.layers.Dense(200, activation=tf.nn.relu),
+        tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+        tf.keras.layers.Dropout(0.1),
+        tf.keras.layers.Conv2D(32, (3, 3), activation='relu'),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+        tf.keras.layers.Dropout(0.1),
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(64, activation=tf.nn.relu),
+        tf.keras.layers.Dropout(0.1),
         tf.keras.layers.Dense(10),
     ])
     return tff.learning.models.from_keras_model(
@@ -59,7 +66,7 @@ def run_emnist(save_dir, budgets, budget_ratios, dp_level):
         return _get_model(test_ds.element_spec)
     
     train_ds, test_ds = _get_dataset(only_digits=True)
-    client_optimizer_fn = lambda: tf.keras.optimizers.SGD(0.01)
+    client_optimizer_fn = lambda: tf.keras.optimizers.Adam(1e-3)
     server_optimizer_fn = lambda: tf.keras.optimizers.SGD(1.0, momentum=0.9)
 
     trained_weights, train_history = None, None
