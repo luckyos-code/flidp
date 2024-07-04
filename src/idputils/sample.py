@@ -153,8 +153,9 @@ def get_weights(
         steps=steps,
         precision=precision,
     )
-
-    return noise_multiplier, qs_per_budget
+    
+    # tff doesn't convert ints to floats automatically
+    return float(noise_multiplier), qs_per_budget
 
 
 if __name__ == "__main__":

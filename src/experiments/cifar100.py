@@ -5,44 +5,41 @@ from .helpers import create_budgets, get_sampling_rates_per_client
 from idputils import get_weights
 from train import train_without_dp, train_with_idp, save_train_results
 
-EMNIST_DELTA = 1e-5
-EMNIST_ROUNDS = 100
-EMNIST_CLIENTS_PER_ROUND = 100
-EMNIST_LOCAL_EPOCHS = 3
+CIFAR_DELTA = 1e-4  # tff cifar dataset contains 500 clients
+CIFAR_ROUNDS = 200
+CIFAR_CLIENTS_PER_ROUND = 100
+CIFAR_LOCAL_EPOCHS = 3
 
-
-def _get_dataset(only_digits) -> Tuple[tff.simulation.datasets.ClientData, tff.simulation.datasets.ClientData]:
-    train_ds, test_ds = tff.simulation.datasets.emnist.load_data(only_digits=only_digits)
+def _get_dataset():
+    train_ds, test_ds = tff.simulation.datasets.cifar100.load_data()
     def element_fn(element):
         return collections.OrderedDict(
-            x=tf.expand_dims(element['pixels'], -1), y=element['label']
+            x=tf.cast(element['image'], dtype=tf.float32) / 255., y=element['coarse_label']
         )
-
     def preprocess_train_dataset(dataset):
         # Use buffer_size same as the maximum client dataset size,
-        # 418 for Federated EMNIST
+        # 100 for Federated CIFAR100
         return (
             dataset
             .map(element_fn)
-            .shuffle(buffer_size=418)
-            .repeat(EMNIST_LOCAL_EPOCHS)
+            .shuffle(buffer_size=100)
+            .repeat(CIFAR_LOCAL_EPOCHS)
             .batch(128, drop_remainder=False)
         )
 
     def preprocess_test_dataset(dataset):
         return dataset.map(element_fn).batch(128, drop_remainder=False)
 
-    emnist_train = train_ds.preprocess(preprocess_train_dataset)
-    emnist_test = preprocess_test_dataset(
+    cifar_train = train_ds.preprocess(preprocess_train_dataset)
+    cifar_test = preprocess_test_dataset(
         test_ds.create_tf_dataset_from_all_clients()
     )
     
-    return emnist_train, emnist_test
-    
+    return cifar_train, cifar_test
 
-def _get_model(input_spec) -> tff.learning.models.VariableModel:
+def _get_model(input_spec):
     model = tf.keras.models.Sequential([
-        tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+        tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
         tf.keras.layers.MaxPooling2D((2, 2)),
         tf.keras.layers.Dropout(0.1),
         tf.keras.layers.Conv2D(32, (3, 3), activation='relu'),
@@ -51,7 +48,7 @@ def _get_model(input_spec) -> tff.learning.models.VariableModel:
         tf.keras.layers.Flatten(),
         tf.keras.layers.Dense(64, activation='relu'),
         tf.keras.layers.Dropout(0.1),
-        tf.keras.layers.Dense(10),
+        tf.keras.layers.Dense(20),
     ])
     return tff.learning.models.from_keras_model(
         keras_model=model,
@@ -61,11 +58,11 @@ def _get_model(input_spec) -> tff.learning.models.VariableModel:
     )
 
 
-def run_emnist(save_dir, budgets, budget_ratios, dp_level):
+def run_cifar(save_dir, budgets, budget_ratios, dp_level):
     def model_fn():
         return _get_model(test_ds.element_spec)
     
-    train_ds, test_ds = _get_dataset(only_digits=True)
+    train_ds, test_ds = _get_dataset()
     client_optimizer_fn = lambda: tf.keras.optimizers.Adam(1e-3)
     server_optimizer_fn = lambda: tf.keras.optimizers.SGD(1.0, momentum=0.9)
 
@@ -78,9 +75,9 @@ def run_emnist(save_dir, budgets, budget_ratios, dp_level):
         )
         noise_multiplier, qs_per_budget = get_weights(
             pp_budgets=budgets_per_client,
-            target_delta=EMNIST_DELTA,
-            default_sample_rate=EMNIST_CLIENTS_PER_ROUND / len(train_ds.client_ids),
-            steps=EMNIST_ROUNDS,
+            target_delta=CIFAR_DELTA,
+            default_sample_rate=CIFAR_CLIENTS_PER_ROUND / len(train_ds.client_ids),
+            steps=CIFAR_ROUNDS,
         )
 
         client_sampling_rates = get_sampling_rates_per_client(
@@ -89,6 +86,13 @@ def run_emnist(save_dir, budgets, budget_ratios, dp_level):
             sampling_rates_per_budget=qs_per_budget
         )
 
+        # print("-------------------------------------------------------------")
+        # print(noise_multiplier)
+        # print(qs_per_budget)
+        # print(budgets_per_client)
+        # print(client_sampling_rates)
+        # print("-------------------------------------------------------------")
+
         trained_weights, train_history = train_with_idp(
             model_fn=model_fn,
             client_optimizer_fn=client_optimizer_fn,
@@ -96,9 +100,9 @@ def run_emnist(save_dir, budgets, budget_ratios, dp_level):
             train_data=train_ds,
             test_data=test_ds,
             client_sampling_rates=client_sampling_rates,
-            rounds=EMNIST_ROUNDS,
+            rounds=CIFAR_ROUNDS,
             noise_multiplier=noise_multiplier,
-            clients_per_round=EMNIST_CLIENTS_PER_ROUND,
+            clients_per_round=CIFAR_CLIENTS_PER_ROUND,
         )
 
     elif dp_level == 'nodp':
@@ -108,10 +112,14 @@ def run_emnist(save_dir, budgets, budget_ratios, dp_level):
             server_optimizer_fn=server_optimizer_fn,
             train_data=train_ds,
             test_data=test_ds,
-            rounds=EMNIST_ROUNDS,
-            clients_per_round=EMNIST_CLIENTS_PER_ROUND,    
+            rounds=CIFAR_ROUNDS,
+            clients_per_round=CIFAR_CLIENTS_PER_ROUND,    
         )
     else:
         raise NotImplementedError(f"dp_level {dp_level} is not available")
     Path(save_dir).mkdir(parents=True)
     save_train_results(save_dir, trained_weights, train_history)
+
+
+if __name__ == "__main__":
+    print("Biggest Client dataset: ", max(len(list(iter(d))) for d in tff.simulation.datasets.cifar100.load_data()[0].datasets()))

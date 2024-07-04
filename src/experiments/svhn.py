@@ -64,7 +64,7 @@ def _get_model(input_spec):
         tf.keras.layers.MaxPooling2D((2, 2)),
         tf.keras.layers.Dropout(0.1),
         tf.keras.layers.Flatten(),
-        tf.keras.layers.Dense(64, activation=tf.nn.relu),
+        tf.keras.layers.Dense(64, activation='relu'),
         tf.keras.layers.Dropout(0.1),
         tf.keras.layers.Dense(10),
     ])
