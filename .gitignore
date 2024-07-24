@@ -3,3 +3,4 @@ dataset-cache
 *.sif
 .idea
 /results
+.ipynb_checkpoints
