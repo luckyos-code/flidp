@@ -1,16 +1,23 @@
 import argparse
 
-from experiments import run_emnist, run_svhn, run_cifar
+from experiments import run_emnist, run_svhn, run_cifar100, run_cifar10
 from helpers import setup_tff_runtime
 
 parser = argparse.ArgumentParser(
     prog="flidp",
 )
 
-parser.add_argument("--dir", type=str, required=True)
-parser.add_argument("--dataset", choices=["emnist", "svhn", "cifar"], required=True)
+parser.add_argument("--save-dir", type=str, required=True)
+parser.add_argument("--dataset", choices=["emnist", "svhn", "cifar10", "cifar100"], required=True)
+parser.add_argument("--model", choices=["simple-cnn", "lucasnet",], required=True)
 parser.add_argument("--budgets", nargs='*', type=float, default=[])
 parser.add_argument("--ratios", nargs='*', type=float, default=[])
+parser.add_argument("--rounds", type=int, required=True)
+parser.add_argument("--clients-per-round", type=int, required=True)
+parser.add_argument("--local-epochs", type=int, required=True)
+parser.add_argument("--batch-size", type=int, required=True)
+parser.add_argument("--client-lr", type=float, required=True)
+parser.add_argument("--server-lr", type=float, required=True)
 
 def infer_dp_level(budgets):
     if not budgets:
@@ -30,21 +37,24 @@ def check_args(args):
 
 def main():
     args = parser.parse_args()
-    print(vars(args))
     args = check_args(args)
     dp_level = infer_dp_level(args.budgets)
-    dp_level = 'idp' if dp_level == 'dp' else dp_level  # only until normal dp FL is implemented!
     print(f"dp level was set to {dp_level}.")
+    args = vars(args)
+    
+    dataset = args.pop("dataset")
     
     # setup GPU devices etc
-    setup_tff_runtime()
+    # setup_tff_runtime()
     
-    if args.dataset == "emnist":        
-        run_emnist(args.dir, args.budgets, args.ratios, dp_level)
-    elif args.dataset == "svhn":
-        run_svhn(args.dir, args.budgets, args.ratios, dp_level)
-    elif args.dataset == "cifar":
-        run_cifar(args.dir, args.budgets, args.ratios, dp_level)
+    if dataset == "emnist":        
+        run_emnist(**args, dp_level=dp_level)
+    elif dataset == "svhn":
+        run_svhn(**args, dp_level=dp_level)
+    elif dataset == "cifar100":
+        run_cifar100(**args, dp_level=dp_level)
+    elif dataset == "cifar10":
+        run_cifar10(**args, dp_level=dp_level)
     else:
         raise NotImplementedError(f"Currently there is no implementation for {args.dataset}")
 

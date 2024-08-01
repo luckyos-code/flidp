@@ -14,7 +14,7 @@ def _get_dataset():
     train_ds, test_ds = tff.simulation.datasets.cifar100.load_data()
     def element_fn(element):
         return collections.OrderedDict(
-            x=tf.cast(element['image'], dtype=tf.float32) / 255., y=element['coarse_label']
+            x=element['image'], y=element['coarse_label']
         )
     def preprocess_train_dataset(dataset):
         # Use buffer_size same as the maximum client dataset size,
@@ -58,7 +58,7 @@ def _get_model(input_spec):
     )
 
 
-def run_cifar(save_dir, budgets, budget_ratios, dp_level):
+def run_cifar100(save_dir, budgets, budget_ratios, dp_level):
     def model_fn():
         return _get_model(test_ds.element_spec)
     

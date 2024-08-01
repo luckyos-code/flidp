@@ -1,31 +1,14 @@
 from typing import Literal
 import numpy as np
 
-from dp_accounting.rdp import RdpAccountant
-from dp_accounting.pld import PLDAccountant
-from dp_accounting.dp_event import PoissonSampledDpEvent, GaussianDpEvent, SelfComposedDpEvent
+from dp_accounting.dp_event import SelfComposedDpEvent
 from dp_accounting import calibrate_dp_mechanism
-from dp_accounting.privacy_accountant import PrivacyAccountant
+
+from .helpers import make_accountant, make_dp_event
 
 MAX_SIGMA = 1e6
 MIN_Q = 1e-9
 MAX_Q = 0.1
-
-
-def make_accountant(accountant_type: Literal["rdp", "pld"]) -> PrivacyAccountant:
-    if accountant_type == "rdp":
-        return RdpAccountant()
-    elif accountant_type == "pld":
-        return PLDAccountant()
-    else:
-        raise NotImplementedError("Unknown accountant")
-
-
-def make_dp_event(noise_multiplier: float, q: float, steps: int):
-    g_ev = GaussianDpEvent(noise_multiplier)
-    p_ev = PoissonSampledDpEvent(sampling_probability=q, event=g_ev)
-    c_ev = SelfComposedDpEvent(p_ev, steps)
-    return c_ev
 
 
 def get_sample_rate(target_epsilon: float, target_delta: float, noise_multiplier: float, steps: int, accountant_type: Literal["rdp", "pld"] = "rdp"):

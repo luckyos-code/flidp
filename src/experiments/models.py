@@ -5,10 +5,19 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import SparseCategoricalCrossentropy
 from tensorflow.keras.applications import EfficientNetV2B0, MobileNetV2
 
-def get_simple_cnn(input_shape, num_classes):
+
+def get_model(model_name, input_shape, num_classes, rescale_factor):
+    if model_name == "simple-cnn":
+        return get_simple_cnn(input_shape, num_classes, rescale_factor, False)
+    elif model_name == "lucasnet":
+        return get_lucasnet(input_shape, num_classes, rescale_factor, False)
+    else:
+        raise NotImplementedError(f"There is no model implemented for {model_name}")
+
+def get_simple_cnn(input_shape, num_classes, rescale_factor, compile=False):
     model = Sequential([
         Input(input_shape),
-        Rescaling(1/255.),
+        Rescaling(rescale_factor),
         Conv2D(32, (3, 3), activation='relu'),
         MaxPooling2D((2, 2)),
         Dropout(0.1),
@@ -23,53 +32,35 @@ def get_simple_cnn(input_shape, num_classes):
         Dropout(0.1),
         Dense(num_classes, activation='softmax'),
     ])
-
-    model.compile(
-        optimizer=Adam(learning_rate=1e-3), 
-        loss=SparseCategoricalCrossentropy(), 
-        metrics=['accuracy']
-    )
+    if compile:
+        model.compile(
+            optimizer=Adam(learning_rate=1e-3), 
+            loss=SparseCategoricalCrossentropy(), 
+            metrics=['accuracy']
+        )
     
     return model
 
 
-def get_lucasnet(input_shape, num_classes):
+def get_lucasnet(input_shape, num_classes, rescale_factor, compile=False):
     groups = 32
     model = Sequential([
         Input(shape=input_shape),
-        Rescaling(1/255.),  # added Rescaling to scale features to [0,1]
+        Rescaling(rescale_factor),  # added Rescaling to scale features to [0,1]
         Resizing(64, 64),  # added resizing to resize to the default value in the original function
 #        RandomFlip(
 #            "horizontal",
 #            seed=42,
 #        ),
-        Conv2D(
-            filters=32,
-            kernel_size=(3, 3),
-            strides=1,
-            padding="same",
-            activation="relu",
-        ),
+        Conv2D(filters=32, kernel_size=(3, 3), strides=1, padding="same", activation="relu",),
         GroupNormalization(groups=groups),
         MaxPooling2D(2, 2),
         Dropout(0.1),  # also added Dropout for regularization
-        Conv2D(
-            filters=32,
-            kernel_size=(3, 3),
-            strides=1,
-            padding="same",
-            activation="relu",
-        ),
+        Conv2D(filters=32, kernel_size=(3, 3), strides=1, padding="same", activation="relu",),
         GroupNormalization(groups=groups),
         MaxPooling2D(2, 2),
         Dropout(0.1),
-        Conv2D(
-            filters=64,
-            kernel_size=(3, 3),
-            strides=1,
-            padding="same",
-            activation="relu",
-        ),
+        Conv2D(filters=64, kernel_size=(3, 3), strides=1, padding="same", activation="relu",),
         GroupNormalization(groups=groups),
         MaxPooling2D(2, 2),
         Dropout(0.1),
@@ -80,16 +71,17 @@ def get_lucasnet(input_shape, num_classes):
         Dense(num_classes, activation="softmax"),
     ])
     
-    model.compile(
-        optimizer=Adam(learning_rate=1e-4),
-        loss=SparseCategoricalCrossentropy(),
-        metrics=['accuracy']
-    )
+    if compile:
+        model.compile(
+            optimizer=Adam(learning_rate=1e-4),
+            loss=SparseCategoricalCrossentropy(),
+            metrics=['accuracy']
+        )
     
     return model
 
 
-def get_efficientnet(input_shape, num_classes):
+def get_efficientnet(input_shape, num_classes, compile=False):
     model = Sequential([
         Input(input_shape),
         Resizing(224, 224),
@@ -102,17 +94,17 @@ def get_efficientnet(input_shape, num_classes):
             include_preprocessing=True
         )
     ])
-
-    model.compile(
-        optimizer=Adam(learning_rate=1e-3),
-        loss=SparseCategoricalCrossentropy(from_logits=False), 
-        metrics=['accuracy']
-    )
+    if compile:
+        model.compile(
+            optimizer=Adam(learning_rate=1e-3),
+            loss=SparseCategoricalCrossentropy(from_logits=False), 
+            metrics=['accuracy']
+        )
     
     return model
 
 
-def get_mobilenet(input_shape, num_classes):
+def get_mobilenet(input_shape, num_classes, compile=False):
     model = Sequential([
         Input(input_shape),
         Resizing(224, 224),
@@ -123,10 +115,11 @@ def get_mobilenet(input_shape, num_classes):
         )
     ])
 
-    model.compile(
-        optimizer=Adam(learning_rate=1e-3),
-        loss=SparseCategoricalCrossentropy(from_logits=False), 
-        metrics=['accuracy']
-    )
+    if compile:
+        model.compile(
+            optimizer=Adam(learning_rate=1e-3),
+            loss=SparseCategoricalCrossentropy(from_logits=False), 
+            metrics=['accuracy']
+        )
     
     return model

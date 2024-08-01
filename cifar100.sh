@@ -18,8 +18,8 @@ BUDGETS=(5.0 10.0 20.0)  # small budgets lead to errors when running the 'strict
 
 # must be allocated before starting the job
 WORK_DIR=/work/$USER-flidp
-TS=$(date '+%d.%m.%Y-%H:%M:%S');
-RUN_DIR=$WORK_DIR/run-$TS
+TS=$(date '+%Y-%m-%d_%H:%M:%S');
+RUN_DIR="${WORK_DIR}/${TS}_${DATASET}"
 mkdir $RUN_DIR
 
 echo "START"
