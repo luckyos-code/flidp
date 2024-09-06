@@ -13,7 +13,7 @@ set -x  # to print all the commands to stderr
 
 CODE_DIR=$HOME/flidp
 CONTAINER_FILE=$HOME/flidp_main.sif
-DATASET="cifar"
+DATASET="cifar100"
 BUDGETS=(5.0 10.0 20.0)  # small budgets lead to errors when running the 'strict' variant
 
 # must be allocated before starting the job

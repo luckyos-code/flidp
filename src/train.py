@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from dataclasses import dataclass, asdict
 
 import numpy as np
 import pandas as pd
@@ -39,43 +40,63 @@ def sample_clients_with_idp(client_sampling_rates: np.array, client_ids: np.arra
     return client_ids[s < client_sampling_rates]
 
 
-def save_train_results(save_dir, weights, history):
+def save_train_results(save_dir, trained_tff_model, trained_keras_model, history):
     save_dir = Path(save_dir)
-    history_df = pd.DataFrame.from_records(history)
+    history_df = pd.DataFrame.from_records(map(asdict, history))
+    history_df.to_pickle(save_dir / "history.pkl")
     history_df.to_csv(save_dir / "history.csv")
+    tff.learning.models.save(trained_tff_model, path=str(save_dir / "trained_tff_model"))
+    trained_keras_model.save(str(save_dir / "trained_model.keras"))
 
 
-def _training_loop(learning_process, eval_process, client_sample_fn, train_data, test_data, rounds, eval_after_rounds, noise_multiplier=None):
+@dataclass
+class RoundRecord:
+    round: int
+    round_time: float
+    sampled_clients: int
+    noise_multiplier: float
+    noise_multiplier_after_adaptive_clipping: float
+    update_clipping_norm: float
+    update_stddev: float
+    accuracy: float
+    loss: float
+
+
+
+def _training_loop(learning_process, eval_process, client_sample_fn, train_data, test_data, rounds, eval_after_rounds, noise_multiplier):
     is_with_dp = noise_multiplier is not None
     history = []
     state = learning_process.initialize()
-    num_sampled_clients = 0
     for round in tqdm(range(rounds)):
         metrics = {}
-        if noise_multiplier:
-            round_info["dp_info"] = {"noise_multiplier": noise_multiplier, **_extract_info_from_dp_state(dp_aggregator_state=state.aggregator)}
+        dp_info = {}
         
         if round % eval_after_rounds == 0:
             model_weights = learning_process.get_model_weights(state)
             metrics = eval_process(model_weights, [test_data])['eval']
 
-        sampled_clients = client_sample_fn(train_data.client_ids)
+        sampled_clients = client_sample_fn(np.array(train_data.client_ids))
         sampled_train_data = [
             train_data.create_tf_dataset_for_client(client)
             for client in sampled_clients
         ]
-
-        round_info = {
-            "round": round,
-            "sampled_clients": num_sampled_clients,
-            "metrics": metrics,
-            "dp_info": {}
-        }
+        num_sampled_clients = len(sampled_clients)
         if is_with_dp:
-            round_info["dp_info"] = {"noise_multiplier": noise_multiplier, **_extract_info_from_dp_state(dp_aggregator_state=state.aggregator)}
+            dp_info = _extract_info_from_dp_state(dp_aggregator_state=state.aggregator)
         
-        history.append(round_info)
-        print(round_info)
+        round_record = RoundRecord(
+            round=round,
+            round_time=None,
+            sampled_clients=num_sampled_clients,
+            noise_multiplier=noise_multiplier,
+            noise_multiplier_after_adaptive_clipping=dp_info.get("noise_multiplier_after_adaptive_clipping", None),
+            update_clipping_norm=dp_info.get("sum_clipping_norm", None),
+            update_stddev=dp_info.get("sum_stddev", None),
+            accuracy=metrics.get("sparse_categorical_accuracy", None),
+            loss=metrics.get("loss", None)
+        )
+        history.append(round_record)
+        print(f"Round {round}:", metrics, dp_info, flush=True)
 
         result = learning_process.next(state, sampled_train_data)
         state = result.state
@@ -83,21 +104,26 @@ def _training_loop(learning_process, eval_process, client_sample_fn, train_data,
     
     model_weights = learning_process.get_model_weights(state)
     metrics = eval_process(model_weights, [test_data])['eval']
-    round_info = {
-            "round": round,
-            "sampled_clients": num_sampled_clients,
-            "metrics": metrics,
-            "dp_info": {}
-        }
     if is_with_dp:
-        round_info["dp_info"] = {"noise_multiplier": noise_multiplier, **_extract_info_from_dp_state(dp_aggregator_state=state.aggregator)}
-    print(round_info)
-    history.append(round_info)
+        dp_info = _extract_info_from_dp_state(dp_aggregator_state=state.aggregator)
+    round_record = RoundRecord(
+        round=round + 1,  # round needs to be incremented once more
+        round_time=None,
+        sampled_clients=num_sampled_clients,
+        noise_multiplier=noise_multiplier,
+        noise_multiplier_after_adaptive_clipping=dp_info.get("noise_multiplier_after_adaptive_clipping", None),
+        update_clipping_norm=dp_info.get("sum_clipping_norm", None),
+        update_stddev=dp_info.get("sum_stddev", None),
+        accuracy=metrics.get("sparse_categorical_accuracy", None),
+        loss=metrics.get("loss", None)
+    )
+    print(f"Round {round}:", metrics, dp_info, flush=True)
+    history.append(round_record)
 
     return model_weights, history
 
+
 def train_without_dp(model_fn, client_optimizer_fn, server_optimizer_fn, train_data, test_data, rounds, clients_per_round, eval_after_rounds=5):
-    history = []
     learning_process = tff.learning.algorithms.build_weighted_fed_avg(
         model_fn=model_fn,
         client_optimizer_fn=client_optimizer_fn,
@@ -105,47 +131,23 @@ def train_without_dp(model_fn, client_optimizer_fn, server_optimizer_fn, train_d
         use_experimental_simulation_loop=True,  # is suggested here https://www.tensorflow.org/federated/tutorials/simulations_with_accelerators
     )
     eval_process = tff.learning.build_federated_evaluation(model_fn)
-    print(f"Aggregator: {learning_process.aggregator}")
     
     def client_sample_fn(client_ids):
         return sample_clients_without_dp(clients_per_round, client_ids)
-
-    state = learning_process.initialize()
-    for round in tqdm(range(rounds)):
-        if round % eval_after_rounds == 0:
-            model_weights = learning_process.get_model_weights(state)
-            metrics = eval_process(model_weights, [test_data])['eval']
-            if round < 25 or round % 25 == 0:
-                print(f'Round {round:3d}: {metrics}')
-
-            history.append({
-                'Round': round,
-                **metrics
-            })
-
-        sampled_clients = sample_clients_without_dp(clients_per_round, train_data.client_ids)
-        sampled_train_data = [
-            train_data.create_tf_dataset_for_client(client)
-            for client in sampled_clients
-        ]
-
-        result = learning_process.next(state, sampled_train_data)
-        state = result.state
-        metrics = result.metrics
     
-    model_weights = learning_process.get_model_weights(state)
-    metrics = eval_process(model_weights, [test_data])['eval']
-    print(f'Round {rounds:3d}: {metrics}')
-    history.append({
-        'Round': round,
-        **metrics
-    })
-
-    return model_weights, history
+    return _training_loop(
+        learning_process=learning_process,
+        eval_process=eval_process,
+        client_sample_fn=client_sample_fn,
+        train_data=train_data,
+        test_data=test_data,
+        rounds=rounds,
+        eval_after_rounds=eval_after_rounds,
+        noise_multiplier=None
+    )
 
 
 def train_with_dp(model_fn, client_optimizer_fn, server_optimizer_fn, train_data, test_data, rounds, noise_multiplier, clients_per_round, eval_after_rounds=5):
-    history = []
     aggregation_factory = tff.learning.dp_aggregator(
         noise_multiplier=noise_multiplier, 
         clients_per_round=clients_per_round
@@ -160,53 +162,22 @@ def train_with_dp(model_fn, client_optimizer_fn, server_optimizer_fn, train_data
     eval_process = tff.learning.build_federated_evaluation(model_fn)
 
     client_sampling_rate = clients_per_round / len(train_data.client_ids)
-    num_sampled_clients = 0
-    # Training loop.
-    state = learning_process.initialize()
-    for round in tqdm(range(rounds)):
-        round_info = {
-            "round": round,
-            "noise_multiplier": noise_multiplier,
-            "sampled_clients": num_sampled_clients,
-            **_extract_info_from_dp_state(dp_aggregator_state=state.aggregator)
-        }
-        print(f"Round Information: {round_info}", flush=True,)  # , flush=True, file=sys.stderr
-        if round % eval_after_rounds == 0:
-            model_weights = learning_process.get_model_weights(state)
-            metrics = eval_process(model_weights, [test_data])['eval']
-            if round < 25 or round % 25 == 0:
-                print(f'Round {round:3d}: {metrics}')
+    def client_sample_fn(client_ids):
+        return sample_clients_with_dp(client_sampling_rate, client_ids)
 
-            history.append({
-                **round_info,
-                **metrics,
-            })
-        
-        sampled_clients = sample_clients_with_dp(client_sampling_rate, np.array(train_data.client_ids))
-        sampled_train_data = [
-            train_data.create_tf_dataset_for_client(client)
-            for client in sampled_clients
-        ]
-        num_sampled_clients = len(sampled_clients)
-
-        result = learning_process.next(state, sampled_train_data)
-        state = result.state
-        metrics = result.metrics
-    
-    model_weights = learning_process.get_model_weights(state)
-    metrics = eval_process(model_weights, [test_data])['eval']
-    print(f'Round {rounds:3d}: {metrics}', flush=True)
-    history.append({
-        **round_info,
-        **metrics,
-    })
-
-    return model_weights, history
+    return _training_loop(
+        learning_process=learning_process,
+        eval_process=eval_process,
+        client_sample_fn=client_sample_fn,
+        train_data=train_data,
+        test_data=test_data,
+        rounds=rounds,
+        eval_after_rounds=eval_after_rounds,
+        noise_multiplier=noise_multiplier,
+    )
 
 
 def train_with_idp(model_fn, client_optimizer_fn, server_optimizer_fn, train_data, test_data, client_sampling_rates, rounds, noise_multiplier, clients_per_round, eval_after_rounds=5):
-    
-    history = []
     aggregation_factory = tff.learning.dp_aggregator(noise_multiplier, clients_per_round)
     learning_process = tff.learning.algorithms.build_unweighted_fed_avg(
         model_fn,
@@ -217,41 +188,51 @@ def train_with_idp(model_fn, client_optimizer_fn, server_optimizer_fn, train_dat
     )
     eval_process = tff.learning.build_federated_evaluation(model_fn)
 
-    # Training loop.
-    state = learning_process.initialize()
-    for round in tqdm(range(rounds)):
-        if round % eval_after_rounds == 0:
-            model_weights = learning_process.get_model_weights(state)
-            metrics = eval_process(model_weights, [test_data])['eval']
-            if round < 25 or round % 25 == 0:
-                print(f'Round {round:3d}: {metrics}')
+    def client_sample_fn(client_ids):
+        return sample_clients_with_idp(client_sampling_rates, client_ids)
+    
+    return _training_loop(
+        learning_process=learning_process,
+        eval_process=eval_process,
+        client_sample_fn=client_sample_fn,
+        train_data=train_data,
+        test_data=test_data,
+        rounds=rounds,
+        eval_after_rounds=eval_after_rounds,
+        noise_multiplier=noise_multiplier,
+    )
 
-            history.append({
-                'Round': round,
-                'NoiseMultiplier': noise_multiplier,
-                **metrics
-            })
 
-        sampled_clients = sample_clients_with_idp(client_sampling_rates, np.array(train_data.client_ids))
-        sampled_train_data = [
-            train_data.create_tf_dataset_for_client(client)
-            for client in sampled_clients
-        ]
+# def run_training(
+#         train_ds, 
+#         test_ds, 
+#         client_optimizer_fn, 
+#         server_optimizer_fn, 
+#         model_fn, 
+#         dp_level, 
+#         rounds, 
+#         clients_per_round, 
+#         budgets, 
+#         budget_ratios, 
+#         target_delta
+# ):
+#     train_clients = np.array(train_ds.client_ids)
+#     learning_process = tff.learning.algorithms.build_weighted_fed_avg(
+#         model_fn=model_fn,
+#         client_optimizer_fn=client_optimizer_fn,
+#         server_optimizer_fn=server_optimizer_fn,
+#         use_experimental_simulation_loop=True,  # is suggested here https://www.tensorflow.org/federated/tutorials/simulations_with_accelerators
+#     )
+#     eval_process = tff.learning.build_federated_evaluation(model_fn)
+#     def training_selection_fn(round):
+#         sampled_client_ids = sample_clients_without_dp(clients_per_round, train_clients)
+#         return [
+#             train_ds.create_tf_dataset_for_client(client)
+#             for client in sampled_client_ids
+#         ]
+    
 
-        result = learning_process.next(state, sampled_train_data)
-        state = result.state
-        metrics = result.metrics
 
-    model_weights = learning_process.get_model_weights(state)
-    metrics = eval_process(model_weights, [test_data])['eval']
-    print(f'Round {rounds:3d}: {metrics}')
-    history.append({
-        'Round': round,
-        'NoiseMultiplier': noise_multiplier,
-        **metrics
-    })
-
-    return model_weights, history
 
 def run_training(
         train_ds, 

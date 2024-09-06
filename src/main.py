@@ -9,7 +9,8 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument("--save-dir", type=str, required=True)
 parser.add_argument("--dataset", choices=["emnist", "svhn", "cifar10", "cifar100"], required=True)
-parser.add_argument("--model", choices=["simple-cnn", "lucasnet",], required=True)
+parser.add_argument("--make-iid", action='store_true', default=False)
+parser.add_argument("--model", choices=["simple-cnn", "lucasnet", "efficientnet", "mobilenet"], required=True)
 parser.add_argument("--budgets", nargs='*', type=float, default=[])
 parser.add_argument("--ratios", nargs='*', type=float, default=[])
 parser.add_argument("--rounds", type=int, required=True)
@@ -56,7 +57,7 @@ def main():
     elif dataset == "cifar10":
         run_cifar10(**args, dp_level=dp_level)
     else:
-        raise NotImplementedError(f"Currently there is no implementation for {args.dataset}")
+        raise NotImplementedError(f"Currently there is no implementation for {dataset}")
 
 if __name__ == "__main__":
     main()

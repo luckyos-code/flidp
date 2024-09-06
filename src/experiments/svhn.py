@@ -67,8 +67,9 @@ def _get_model(model_name, input_spec):
     )
 
 
-
-def run_svhn(save_dir, model, budgets, ratios, dp_level, rounds, clients_per_round, local_epochs, batch_size, client_lr, server_lr):
+def run_svhn(save_dir, model, budgets, ratios, dp_level, rounds, clients_per_round, local_epochs, batch_size, client_lr, server_lr, make_iid):
+    if make_iid:
+        raise NotImplementedError("no iid creation of the dataset available yet")
     def model_fn():
         return _get_model(model, test_ds.element_spec)
 
@@ -91,4 +92,13 @@ def run_svhn(save_dir, model, budgets, ratios, dp_level, rounds, clients_per_rou
     )
 
     Path(save_dir).mkdir(parents=True)
-    save_train_results(save_dir, trained_weights, train_history)
+    keras_model = get_model(model, input_shape=IMAGE_SHAPE, num_classes=NUM_CLASSES, rescale_factor=RESCALE_FACTOR, compile=True)
+    trained_weights.assign_weights_to(keras_model)
+    tff_model = model_fn()
+    trained_weights.assign_weights_to(tff_model)
+    save_train_results(
+        save_dir=save_dir, 
+        trained_tff_model=tff_model,
+        trained_keras_model=keras_model,  
+        history=train_history
+    )
