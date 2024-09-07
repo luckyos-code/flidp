@@ -6,15 +6,15 @@ from tensorflow.keras.losses import SparseCategoricalCrossentropy
 from tensorflow.keras.applications import EfficientNetV2B0, MobileNetV2
 
 
-def get_model(model_name, input_shape, num_classes, rescale_factor):
+def get_model(model_name, input_shape, num_classes, rescale_factor, compile=False):
     if model_name == "simple-cnn":
-        return get_simple_cnn(input_shape, num_classes, rescale_factor, compile=False)
+        return get_simple_cnn(input_shape, num_classes, rescale_factor, compile=compile)
     elif model_name == "lucasnet":
-        return get_lucasnet(input_shape, num_classes, rescale_factor, compile=False)
+        return get_lucasnet(input_shape, num_classes, rescale_factor, compile=compile)
     elif model_name == "efficientnet":
-        return get_efficientnet(input_shape, num_classes, compile=False)
+        return get_efficientnet(input_shape, num_classes, compile=compile)
     elif model_name == "mobilenet":
-        return get_mobilenet(input_shape, num_classes, compile=False)
+        return get_mobilenet(input_shape, num_classes, compile=compile)
     else:
         raise NotImplementedError(f"There is no model implemented for {model_name}")
 

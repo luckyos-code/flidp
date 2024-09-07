@@ -91,7 +91,6 @@ def run_cifar10(save_dir, model, budgets, ratios, dp_level, rounds, clients_per_
         target_delta=DELTA,
     )
 
-    Path(save_dir).mkdir(parents=True)
     keras_model = get_model(model, input_shape=IMAGE_SHAPE, num_classes=NUM_CLASSES, rescale_factor=RESCALE_FACTOR, compile=True)
     trained_weights.assign_weights_to(keras_model)
     tff_model = model_fn()
