@@ -84,11 +84,14 @@ fi
 
 echo "START"
 
+mkdir $RUN_DIR
+echo $SLURM_JOB_ID > "${RUN_DIR}/slurm-job-id.txt"
+
 echo "Command: ${PYTHON_COMMAND}"
 
 singularity exec --bind /work:/work --nv $CONTAINER_FILE bash -c \
 "\
-cd $CODE_DIR && mkdir $RUN_DIR && $PYTHON_COMMAND\
+cd $CODE_DIR && $PYTHON_COMMAND\
 "
 
 echo "FINISHED"

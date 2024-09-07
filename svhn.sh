@@ -22,7 +22,7 @@ SERVER_LR=1.0
 CODE_DIR=$HOME/flidp
 CONTAINER_FILE=$HOME/flidp_main.sif
 DATASET="svhn"
-BUDGETS=(5.0 10.0 20.0)  # small budgets lead to very bad results (19% acc vs 76% without DP)
+BUDGETS=(1.0 2.0 3.0)  # small budgets lead to very bad results (19% acc vs 76% without DP)
 INDIVIDUAL_RELAXED_BUDGET_DISTRIBUTION=(0.34 0.43 0.23)
 INDIVIDUAL_STRICT_BUDGET_DISTRIBUTION=(0.54 0.37 0.09)
 
@@ -84,11 +84,14 @@ fi
 
 echo "START"
 
+mkdir $RUN_DIR
+echo $SLURM_JOB_ID > "${RUN_DIR}/slurm-job-id.txt"
+
 echo "Command: ${PYTHON_COMMAND}"
 
 singularity exec --bind /work:/work --nv $CONTAINER_FILE bash -c \
 "\
-cd $CODE_DIR && mkdir $RUN_DIR && $PYTHON_COMMAND\
+cd $CODE_DIR && $PYTHON_COMMAND\
 "
 
 echo "FINISHED"
