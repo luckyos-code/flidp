@@ -22,7 +22,7 @@ SERVER_LR=1.0
 CODE_DIR=$HOME/flidp
 CONTAINER_FILE=$HOME/flidp_main.sif
 DATASET="svhn"
-BUDGETS=(1.0 2.0 3.0)  # small budgets lead to very bad results (19% acc vs 76% without DP)
+BUDGETS=(15.0 25.0 40.0)  # small budgets lead to very bad results (19% acc vs 76% without DP)
 INDIVIDUAL_RELAXED_BUDGET_DISTRIBUTION=(0.34 0.43 0.23)
 INDIVIDUAL_STRICT_BUDGET_DISTRIBUTION=(0.54 0.37 0.09)
 
