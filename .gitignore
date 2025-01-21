@@ -1,6 +1,13 @@
 __pycache__
 dataset-cache
-*.sif
+
 .idea
-/results
 .ipynb_checkpoints
+
+*.sif
+Singularity
+datasets_custom.zip
+
+/datasets_custom
+/results
+/logs
