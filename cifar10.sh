@@ -2,27 +2,38 @@
 
 #SBATCH --job-name=flidp-cifar10
 #SBATCH --partition=clara
+#SBATCH --gres=gpu:rtx2080ti:1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=16
-#SBATCH --time=5:00:00
-#SBATCH --gres=gpu:v100:1
-#SBATCH --output=/home/sc.uni-leipzig.de/oe152msue/logs/%x-%j/stdout.out
-#SBATCH --error=/home/sc.uni-leipzig.de/oe152msue/logs/%x-%j/stderr.err
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --time=1-00:00:00
+#SBATCH --output=logs/%x-%j/stdout.out
+#SBATCH --error=logs/%x-%j/stderr.err
+#SBATCH --mail-type=FAIL
+
+# sample slurm run for iid and no-dp: sbatch cifar10.sh -p no-dp -r
 
 set -x  # to print all the commands to stderr
 
-MODEL="simple-cnn"
-ROUNDS=100
+# parameters that change depending on dataset
+DATASET="cifar10"
+BUDGETS=(10.0 20.0 30.0)
 CLIENTS_PER_ROUND=30
-LOCAL_EPOCHS=5
+
+# common paths
+CODE_DIR=$PWD
+CONTAINER_FILE=$PWD/flidp.sif
+FALLBACK_WORK_DIR=$PWD/results
+
+# common training parameters
+MODEL="simple-cnn"
+ROUNDS=420
+LOCAL_EPOCHS=15
 BATCH_SIZE=128
-CLIENT_LR=0.001  # 0.0003
+CLIENT_LR=0.0005
 SERVER_LR=1.0
 
-CODE_DIR=$HOME/flidp
-CONTAINER_FILE=$HOME/flidp_main.sif
-DATASET="cifar10"
-BUDGETS=(15.0 25.0 40.0)
+# privacy distributions
 INDIVIDUAL_RELAXED_BUDGET_DISTRIBUTION=(0.34 0.43 0.23)
 INDIVIDUAL_STRICT_BUDGET_DISTRIBUTION=(0.54 0.37 0.09)
 
@@ -36,9 +47,10 @@ do
 done
 
 # check if workdir exists
-if ! [ -d $WORK_DIR ]; then
-    echo "working directory ${WORK_DIR} does not exist."
-    exit 1
+if [ -z "$WORK_DIR" ] || ! [ -d "$WORK_DIR" ]; then
+    echo "working directory ${WORK_DIR} does not exist. Creating and using: ${FALLBACK_WORK_DIR}"
+    mkdir -p $FALLBACK_WORK_DIR
+    WORK_DIR=$FALLBACK_WORK_DIR
 fi
 
 # check if privacy level is in defined set of levels
@@ -49,10 +61,11 @@ if ! [[ ${PRIVACY_LEVELS[@]} =~ $PRIVACY_LEVEL ]]; then
 fi
 
 TS=$(date '+%Y-%m-%d_%H:%M:%S');
-RUN_DIR="${WORK_DIR}/${TS}_${DATASET}_${PRIVACY_LEVEL}"
+RUN_DIR="${WORK_DIR}/${DATASET}_${PRIVACY_LEVEL}"
 if [ "$MAKE_IID" = true ]; then
     RUN_DIR="${RUN_DIR}_iid"
 fi
+RUN_DIR="${RUN_DIR}_${TS}"
 
 PYTHON_COMMAND=""
 case "${PRIVACY_LEVEL}" in

@@ -1,53 +1,32 @@
 # Federated Learning with Individualized Differential Privacy
+- reference code for paper "Federated Learning with Individualized Differential Privacy" [arxiv preprint](TODO)
+- report pdf and results can be found under [/report](./report) TODO
 
-## Sync files to the cluster
+TODO abstract
 
-```
-rsync -avu . oe152msue@login01.sc.uni-leipzig.de:~/flidp
-```
+## Usage Instructions
 
-Add `--delete` as option to delete files that do not exist in the source directory.
+### Software and Hardware Requirements
+* Python 3.10 or comparable (for using `spyhton`
+* our mode of operation as described below requires a Slurm-based computing cluster node with Singularity container support
+* alternatively one can change the scripts to run locally or using Docker (or any other equivalent) directly
 
-## Resource Access on Cluster
+### Getting Needed Datasets
+Get the custom CIFAR-10 and SVHN datasets prepared for our federated learning task.
 
-To interactively allocate resources use `salloc`, e.g.
+1. download 'datasets_custom.zip' from our [zenodo repository](TODO)
+2. extract contents - there should now be '/datasets_custom/cifar10' and 'datasets_custom/svhn' folders
 
-```
-salloc -N 1 -p clara --gres=gpu:rtx2080ti:1 --mem=32G --cpus-per-task=8 --time=6:00:00
-```
+Optional: in '/src/notebooks' you can find the script to recreate these datasets if needed.
 
-Possible GPU choices are `gpu:rtx2080ti:1` and `gpu:v100:1`
-
-Then run any command with `srun`. To free the resources type `exit` or cancel the job via `scancel`.
-
-To check the status of your submitted jobs run 
-
-```
-squeue -u $USER
-```
-
-## Pull docker image
-
-To log into `ghcr` run 
-
-```
-apptainer remote login --username <USER> docker://ghcr.io
-```
-
-To pull an image run 
-
-```
-singularity pull docker://<ghcr-image>
-```
-
-## Checks during the execution
-
-To check the GPU utilization during a run, you can run this command on the SLURM cluster (here for a running job with id `9189302`)
-
-```
-srun --jobid 9189302 --pty nvidia-smi
-```
-
-## Runs
-
-MNIST -> ~/logs/flidp-9189302/stdout.out
+### Running Experiments
+1. install sphyton
+    `pip install spython`
+2. create Singularity file from Dockerfile
+    `spython recipe Dockerfile > Singularity`
+3. build .sif container from Singularity file
+    `singularity build flidp.sif Singularity`
+4. test run some code using the .sif container
+    `singularity exec --nv flidp.sif python3.10 src/main.py`
+5. start single experiment on a slurm cluster using any of the given .sh-scripts or use `./run_all.sh` to start all experiments at once (NOTE: change the #SBATCH configuration for your cluster specifics; for aldaghri experiment uncomment lines in emnist.sh)
+6. results will be located in the 'results' folder and any run outputs in the 'logs' folder

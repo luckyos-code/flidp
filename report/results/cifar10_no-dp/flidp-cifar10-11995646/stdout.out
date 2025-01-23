@@ -1,0 +1,466 @@
+START
+Command: python3 src/main.py --save-dir /home/sc.uni-leipzig.de/ll95wyqa/projects/flidp/results/all-2025-01-22_18:03:55/cifar10_no-dp_2025-01-22_19:59:39 --dataset cifar10 --model simple-cnn --rounds 420 --clients-per-round 30 --local-epochs 15 --batch-size 128 --client-lr 0.0005 --server-lr 1.0
+dp level was set to nodp.
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ rescaling (Rescaling)       (None, 32, 32, 3)         0         
+                                                                 
+ conv2d (Conv2D)             (None, 30, 30, 32)        896       
+                                                                 
+ max_pooling2d (MaxPooling2  (None, 15, 15, 32)        0         
+ D)                                                              
+                                                                 
+ dropout (Dropout)           (None, 15, 15, 32)        0         
+                                                                 
+ conv2d_1 (Conv2D)           (None, 13, 13, 32)        9248      
+                                                                 
+ max_pooling2d_1 (MaxPoolin  (None, 6, 6, 32)          0         
+ g2D)                                                            
+                                                                 
+ dropout_1 (Dropout)         (None, 6, 6, 32)          0         
+                                                                 
+ conv2d_2 (Conv2D)           (None, 4, 4, 32)          9248      
+                                                                 
+ max_pooling2d_2 (MaxPoolin  (None, 2, 2, 32)          0         
+ g2D)                                                            
+                                                                 
+ dropout_2 (Dropout)         (None, 2, 2, 32)          0         
+                                                                 
+ flatten (Flatten)           (None, 128)               0         
+                                                                 
+ dense (Dense)               (None, 64)                8256      
+                                                                 
+ dropout_3 (Dropout)         (None, 64)                0         
+                                                                 
+ dense_1 (Dense)             (None, 10)                650       
+                                                                 
+=================================================================
+Total params: 28298 (110.54 KB)
+Trainable params: 28298 (110.54 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+None
+Round 0: OrderedDict([('sparse_categorical_accuracy', 0.1), ('loss', 2.3061032), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 1: {} {}
+Round 2: {} {}
+Round 3: {} {}
+Round 4: {} {}
+Round 5: OrderedDict([('sparse_categorical_accuracy', 0.1312), ('loss', 2.3158095), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 6: {} {}
+Round 7: {} {}
+Round 8: {} {}
+Round 9: {} {}
+Round 10: OrderedDict([('sparse_categorical_accuracy', 0.1542), ('loss', 2.3179803), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 11: {} {}
+Round 12: {} {}
+Round 13: {} {}
+Round 14: {} {}
+Round 15: OrderedDict([('sparse_categorical_accuracy', 0.1421), ('loss', 2.2596345), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 16: {} {}
+Round 17: {} {}
+Round 18: {} {}
+Round 19: {} {}
+Round 20: OrderedDict([('sparse_categorical_accuracy', 0.148), ('loss', 2.2347543), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 21: {} {}
+Round 22: {} {}
+Round 23: {} {}
+Round 24: {} {}
+Round 25: OrderedDict([('sparse_categorical_accuracy', 0.1951), ('loss', 2.2124467), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 26: {} {}
+Round 27: {} {}
+Round 28: {} {}
+Round 29: {} {}
+Round 30: OrderedDict([('sparse_categorical_accuracy', 0.1923), ('loss', 2.1416345), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 31: {} {}
+Round 32: {} {}
+Round 33: {} {}
+Round 34: {} {}
+Round 35: OrderedDict([('sparse_categorical_accuracy', 0.2414), ('loss', 2.0730834), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 36: {} {}
+Round 37: {} {}
+Round 38: {} {}
+Round 39: {} {}
+Round 40: OrderedDict([('sparse_categorical_accuracy', 0.217), ('loss', 2.098681), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 41: {} {}
+Round 42: {} {}
+Round 43: {} {}
+Round 44: {} {}
+Round 45: OrderedDict([('sparse_categorical_accuracy', 0.2283), ('loss', 2.055169), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 46: {} {}
+Round 47: {} {}
+Round 48: {} {}
+Round 49: {} {}
+Round 50: OrderedDict([('sparse_categorical_accuracy', 0.2674), ('loss', 1.9917182), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 51: {} {}
+Round 52: {} {}
+Round 53: {} {}
+Round 54: {} {}
+Round 55: OrderedDict([('sparse_categorical_accuracy', 0.2469), ('loss', 1.998242), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 56: {} {}
+Round 57: {} {}
+Round 58: {} {}
+Round 59: {} {}
+Round 60: OrderedDict([('sparse_categorical_accuracy', 0.2844), ('loss', 1.9406521), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 61: {} {}
+Round 62: {} {}
+Round 63: {} {}
+Round 64: {} {}
+Round 65: OrderedDict([('sparse_categorical_accuracy', 0.2748), ('loss', 1.970586), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 66: {} {}
+Round 67: {} {}
+Round 68: {} {}
+Round 69: {} {}
+Round 70: OrderedDict([('sparse_categorical_accuracy', 0.2613), ('loss', 1.9413188), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 71: {} {}
+Round 72: {} {}
+Round 73: {} {}
+Round 74: {} {}
+Round 75: OrderedDict([('sparse_categorical_accuracy', 0.2978), ('loss', 1.9416113), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 76: {} {}
+Round 77: {} {}
+Round 78: {} {}
+Round 79: {} {}
+Round 80: OrderedDict([('sparse_categorical_accuracy', 0.2744), ('loss', 1.9406228), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 81: {} {}
+Round 82: {} {}
+Round 83: {} {}
+Round 84: {} {}
+Round 85: OrderedDict([('sparse_categorical_accuracy', 0.3136), ('loss', 1.8728327), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 86: {} {}
+Round 87: {} {}
+Round 88: {} {}
+Round 89: {} {}
+Round 90: OrderedDict([('sparse_categorical_accuracy', 0.2771), ('loss', 1.9078664), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 91: {} {}
+Round 92: {} {}
+Round 93: {} {}
+Round 94: {} {}
+Round 95: OrderedDict([('sparse_categorical_accuracy', 0.311), ('loss', 1.858821), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 96: {} {}
+Round 97: {} {}
+Round 98: {} {}
+Round 99: {} {}
+Round 100: OrderedDict([('sparse_categorical_accuracy', 0.3103), ('loss', 1.8613933), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 101: {} {}
+Round 102: {} {}
+Round 103: {} {}
+Round 104: {} {}
+Round 105: OrderedDict([('sparse_categorical_accuracy', 0.3414), ('loss', 1.8114307), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 106: {} {}
+Round 107: {} {}
+Round 108: {} {}
+Round 109: {} {}
+Round 110: OrderedDict([('sparse_categorical_accuracy', 0.3206), ('loss', 1.8300836), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 111: {} {}
+Round 112: {} {}
+Round 113: {} {}
+Round 114: {} {}
+Round 115: OrderedDict([('sparse_categorical_accuracy', 0.3034), ('loss', 1.8541774), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 116: {} {}
+Round 117: {} {}
+Round 118: {} {}
+Round 119: {} {}
+Round 120: OrderedDict([('sparse_categorical_accuracy', 0.3293), ('loss', 1.8198742), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 121: {} {}
+Round 122: {} {}
+Round 123: {} {}
+Round 124: {} {}
+Round 125: OrderedDict([('sparse_categorical_accuracy', 0.3345), ('loss', 1.809024), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 126: {} {}
+Round 127: {} {}
+Round 128: {} {}
+Round 129: {} {}
+Round 130: OrderedDict([('sparse_categorical_accuracy', 0.3471), ('loss', 1.8157449), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 131: {} {}
+Round 132: {} {}
+Round 133: {} {}
+Round 134: {} {}
+Round 135: OrderedDict([('sparse_categorical_accuracy', 0.3532), ('loss', 1.7574426), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 136: {} {}
+Round 137: {} {}
+Round 138: {} {}
+Round 139: {} {}
+Round 140: OrderedDict([('sparse_categorical_accuracy', 0.3372), ('loss', 1.8050183), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 141: {} {}
+Round 142: {} {}
+Round 143: {} {}
+Round 144: {} {}
+Round 145: OrderedDict([('sparse_categorical_accuracy', 0.3404), ('loss', 1.7615105), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 146: {} {}
+Round 147: {} {}
+Round 148: {} {}
+Round 149: {} {}
+Round 150: OrderedDict([('sparse_categorical_accuracy', 0.3286), ('loss', 1.8049158), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 151: {} {}
+Round 152: {} {}
+Round 153: {} {}
+Round 154: {} {}
+Round 155: OrderedDict([('sparse_categorical_accuracy', 0.3641), ('loss', 1.7521014), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 156: {} {}
+Round 157: {} {}
+Round 158: {} {}
+Round 159: {} {}
+Round 160: OrderedDict([('sparse_categorical_accuracy', 0.3651), ('loss', 1.7825698), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 161: {} {}
+Round 162: {} {}
+Round 163: {} {}
+Round 164: {} {}
+Round 165: OrderedDict([('sparse_categorical_accuracy', 0.3522), ('loss', 1.7518411), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 166: {} {}
+Round 167: {} {}
+Round 168: {} {}
+Round 169: {} {}
+Round 170: OrderedDict([('sparse_categorical_accuracy', 0.3706), ('loss', 1.7475824), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 171: {} {}
+Round 172: {} {}
+Round 173: {} {}
+Round 174: {} {}
+Round 175: OrderedDict([('sparse_categorical_accuracy', 0.3568), ('loss', 1.7497097), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 176: {} {}
+Round 177: {} {}
+Round 178: {} {}
+Round 179: {} {}
+Round 180: OrderedDict([('sparse_categorical_accuracy', 0.3463), ('loss', 1.8175541), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 181: {} {}
+Round 182: {} {}
+Round 183: {} {}
+Round 184: {} {}
+Round 185: OrderedDict([('sparse_categorical_accuracy', 0.3782), ('loss', 1.7213281), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 186: {} {}
+Round 187: {} {}
+Round 188: {} {}
+Round 189: {} {}
+Round 190: OrderedDict([('sparse_categorical_accuracy', 0.38), ('loss', 1.691864), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 191: {} {}
+Round 192: {} {}
+Round 193: {} {}
+Round 194: {} {}
+Round 195: OrderedDict([('sparse_categorical_accuracy', 0.3895), ('loss', 1.6959133), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 196: {} {}
+Round 197: {} {}
+Round 198: {} {}
+Round 199: {} {}
+Round 200: OrderedDict([('sparse_categorical_accuracy', 0.3756), ('loss', 1.6967673), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 201: {} {}
+Round 202: {} {}
+Round 203: {} {}
+Round 204: {} {}
+Round 205: OrderedDict([('sparse_categorical_accuracy', 0.3587), ('loss', 1.7737018), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 206: {} {}
+Round 207: {} {}
+Round 208: {} {}
+Round 209: {} {}
+Round 210: OrderedDict([('sparse_categorical_accuracy', 0.3975), ('loss', 1.6759902), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 211: {} {}
+Round 212: {} {}
+Round 213: {} {}
+Round 214: {} {}
+Round 215: OrderedDict([('sparse_categorical_accuracy', 0.3865), ('loss', 1.7133293), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 216: {} {}
+Round 217: {} {}
+Round 218: {} {}
+Round 219: {} {}
+Round 220: OrderedDict([('sparse_categorical_accuracy', 0.3924), ('loss', 1.6606265), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 221: {} {}
+Round 222: {} {}
+Round 223: {} {}
+Round 224: {} {}
+Round 225: OrderedDict([('sparse_categorical_accuracy', 0.397), ('loss', 1.6662264), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 226: {} {}
+Round 227: {} {}
+Round 228: {} {}
+Round 229: {} {}
+Round 230: OrderedDict([('sparse_categorical_accuracy', 0.3549), ('loss', 1.7656859), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 231: {} {}
+Round 232: {} {}
+Round 233: {} {}
+Round 234: {} {}
+Round 235: OrderedDict([('sparse_categorical_accuracy', 0.3981), ('loss', 1.668877), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 236: {} {}
+Round 237: {} {}
+Round 238: {} {}
+Round 239: {} {}
+Round 240: OrderedDict([('sparse_categorical_accuracy', 0.4065), ('loss', 1.6442906), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 241: {} {}
+Round 242: {} {}
+Round 243: {} {}
+Round 244: {} {}
+Round 245: OrderedDict([('sparse_categorical_accuracy', 0.4025), ('loss', 1.6542836), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 246: {} {}
+Round 247: {} {}
+Round 248: {} {}
+Round 249: {} {}
+Round 250: OrderedDict([('sparse_categorical_accuracy', 0.4113), ('loss', 1.639154), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 251: {} {}
+Round 252: {} {}
+Round 253: {} {}
+Round 254: {} {}
+Round 255: OrderedDict([('sparse_categorical_accuracy', 0.4108), ('loss', 1.6083106), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 256: {} {}
+Round 257: {} {}
+Round 258: {} {}
+Round 259: {} {}
+Round 260: OrderedDict([('sparse_categorical_accuracy', 0.4024), ('loss', 1.652452), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 261: {} {}
+Round 262: {} {}
+Round 263: {} {}
+Round 264: {} {}
+Round 265: OrderedDict([('sparse_categorical_accuracy', 0.3982), ('loss', 1.6502336), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 266: {} {}
+Round 267: {} {}
+Round 268: {} {}
+Round 269: {} {}
+Round 270: OrderedDict([('sparse_categorical_accuracy', 0.3952), ('loss', 1.665066), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 271: {} {}
+Round 272: {} {}
+Round 273: {} {}
+Round 274: {} {}
+Round 275: OrderedDict([('sparse_categorical_accuracy', 0.4019), ('loss', 1.6738453), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 276: {} {}
+Round 277: {} {}
+Round 278: {} {}
+Round 279: {} {}
+Round 280: OrderedDict([('sparse_categorical_accuracy', 0.4072), ('loss', 1.6334372), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 281: {} {}
+Round 282: {} {}
+Round 283: {} {}
+Round 284: {} {}
+Round 285: OrderedDict([('sparse_categorical_accuracy', 0.4244), ('loss', 1.5784607), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 286: {} {}
+Round 287: {} {}
+Round 288: {} {}
+Round 289: {} {}
+Round 290: OrderedDict([('sparse_categorical_accuracy', 0.4064), ('loss', 1.6129744), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 291: {} {}
+Round 292: {} {}
+Round 293: {} {}
+Round 294: {} {}
+Round 295: OrderedDict([('sparse_categorical_accuracy', 0.3764), ('loss', 1.6687976), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 296: {} {}
+Round 297: {} {}
+Round 298: {} {}
+Round 299: {} {}
+Round 300: OrderedDict([('sparse_categorical_accuracy', 0.4245), ('loss', 1.5808051), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 301: {} {}
+Round 302: {} {}
+Round 303: {} {}
+Round 304: {} {}
+Round 305: OrderedDict([('sparse_categorical_accuracy', 0.4154), ('loss', 1.5926688), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 306: {} {}
+Round 307: {} {}
+Round 308: {} {}
+Round 309: {} {}
+Round 310: OrderedDict([('sparse_categorical_accuracy', 0.4126), ('loss', 1.6149001), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 311: {} {}
+Round 312: {} {}
+Round 313: {} {}
+Round 314: {} {}
+Round 315: OrderedDict([('sparse_categorical_accuracy', 0.4234), ('loss', 1.581591), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 316: {} {}
+Round 317: {} {}
+Round 318: {} {}
+Round 319: {} {}
+Round 320: OrderedDict([('sparse_categorical_accuracy', 0.4355), ('loss', 1.5476452), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 321: {} {}
+Round 322: {} {}
+Round 323: {} {}
+Round 324: {} {}
+Round 325: OrderedDict([('sparse_categorical_accuracy', 0.4185), ('loss', 1.6193427), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 326: {} {}
+Round 327: {} {}
+Round 328: {} {}
+Round 329: {} {}
+Round 330: OrderedDict([('sparse_categorical_accuracy', 0.4094), ('loss', 1.6299609), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 331: {} {}
+Round 332: {} {}
+Round 333: {} {}
+Round 334: {} {}
+Round 335: OrderedDict([('sparse_categorical_accuracy', 0.403), ('loss', 1.6278257), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 336: {} {}
+Round 337: {} {}
+Round 338: {} {}
+Round 339: {} {}
+Round 340: OrderedDict([('sparse_categorical_accuracy', 0.4254), ('loss', 1.5802749), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 341: {} {}
+Round 342: {} {}
+Round 343: {} {}
+Round 344: {} {}
+Round 345: OrderedDict([('sparse_categorical_accuracy', 0.4159), ('loss', 1.6139016), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 346: {} {}
+Round 347: {} {}
+Round 348: {} {}
+Round 349: {} {}
+Round 350: OrderedDict([('sparse_categorical_accuracy', 0.4408), ('loss', 1.5540608), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 351: {} {}
+Round 352: {} {}
+Round 353: {} {}
+Round 354: {} {}
+Round 355: OrderedDict([('sparse_categorical_accuracy', 0.4396), ('loss', 1.5508546), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 356: {} {}
+Round 357: {} {}
+Round 358: {} {}
+Round 359: {} {}
+Round 360: OrderedDict([('sparse_categorical_accuracy', 0.4181), ('loss', 1.5819535), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 361: {} {}
+Round 362: {} {}
+Round 363: {} {}
+Round 364: {} {}
+Round 365: OrderedDict([('sparse_categorical_accuracy', 0.4243), ('loss', 1.5867252), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 366: {} {}
+Round 367: {} {}
+Round 368: {} {}
+Round 369: {} {}
+Round 370: OrderedDict([('sparse_categorical_accuracy', 0.4438), ('loss', 1.5316395), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 371: {} {}
+Round 372: {} {}
+Round 373: {} {}
+Round 374: {} {}
+Round 375: OrderedDict([('sparse_categorical_accuracy', 0.4286), ('loss', 1.578995), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 376: {} {}
+Round 377: {} {}
+Round 378: {} {}
+Round 379: {} {}
+Round 380: OrderedDict([('sparse_categorical_accuracy', 0.4589), ('loss', 1.510608), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 381: {} {}
+Round 382: {} {}
+Round 383: {} {}
+Round 384: {} {}
+Round 385: OrderedDict([('sparse_categorical_accuracy', 0.429), ('loss', 1.6126753), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 386: {} {}
+Round 387: {} {}
+Round 388: {} {}
+Round 389: {} {}
+Round 390: OrderedDict([('sparse_categorical_accuracy', 0.4265), ('loss', 1.5504712), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 391: {} {}
+Round 392: {} {}
+Round 393: {} {}
+Round 394: {} {}
+Round 395: OrderedDict([('sparse_categorical_accuracy', 0.4465), ('loss', 1.5049369), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 396: {} {}
+Round 397: {} {}
+Round 398: {} {}
+Round 399: {} {}
+Round 400: OrderedDict([('sparse_categorical_accuracy', 0.4391), ('loss', 1.5351061), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 401: {} {}
+Round 402: {} {}
+Round 403: {} {}
+Round 404: {} {}
+Round 405: OrderedDict([('sparse_categorical_accuracy', 0.4455), ('loss', 1.5450841), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 406: {} {}
+Round 407: {} {}
+Round 408: {} {}
+Round 409: {} {}
+Round 410: OrderedDict([('sparse_categorical_accuracy', 0.431), ('loss', 1.5427366), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 411: {} {}
+Round 412: {} {}
+Round 413: {} {}
+Round 414: {} {}
+Round 415: OrderedDict([('sparse_categorical_accuracy', 0.4382), ('loss', 1.5260868), ('num_examples', 10000), ('num_batches', 79)]) {}
+Round 416: {} {}
+Round 417: {} {}
+Round 418: {} {}
+Round 419: {} {}
+Round 419: OrderedDict([('sparse_categorical_accuracy', 0.4421), ('loss', 1.5247502), ('num_examples', 10000), ('num_batches', 79)]) {}
+FINISHED

@@ -1,39 +1,112 @@
+# ATTENTION: CIFAR100 EXPERIMENT CODE IS OUTDATED
 #!/bin/bash
 
-#SBATCH --job-name=flidp
+#SBATCH --job-name=flidp-cifar100
 #SBATCH --partition=clara
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=16
-#SBATCH --time=24:00:00
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+##SBATCH --gres=gpu:v100:1
 #SBATCH --gres=gpu:rtx2080ti:1
-#SBATCH --output=/home/sc.uni-leipzig.de/oe152msue/logs/%x-%j/stdout.out
-#SBATCH --error=/home/sc.uni-leipzig.de/oe152msue/logs/%x-%j/stderr.err
+#SBATCH --time=0-5:00:00
+#SBATCH --output=logs/%x-%j/stdout.out
+#SBATCH --error=logs/%x-%j/stderr.err
+##SBATCH --mail-type=FAIL
+
+# sample slurm run for non-iid and no-dp: sbatch cifar100.sh -p no-dp
 
 set -x  # to print all the commands to stderr
 
-CODE_DIR=$HOME/flidp
-CONTAINER_FILE=$HOME/flidp_main.sif
+# parameters that change depending on dataset
 DATASET="cifar100"
-BUDGETS=(5.0 10.0 20.0)  # small budgets lead to errors when running the 'strict' variant
+BUDGETS=(15.0 25.0 40.0)
+CLIENTS_PER_ROUND=30  # TODO small budgets lead to errors when running the 'strict' variant
 
-# must be allocated before starting the job
-WORK_DIR=/work/$USER-flidp
+# common paths
+CODE_DIR=$PWD
+CONTAINER_FILE=$PWD/flidp.sif
+FALLBACK_WORK_DIR=$PWD/results
+
+# common training parameters
+MODEL="simple-cnn"
+ROUNDS=100
+LOCAL_EPOCHS=5
+BATCH_SIZE=128
+CLIENT_LR=0.001  # 0.0003
+SERVER_LR=1.0
+
+# privacy distributions
+INDIVIDUAL_RELAXED_BUDGET_DISTRIBUTION=(0.34 0.43 0.23)
+INDIVIDUAL_STRICT_BUDGET_DISTRIBUTION=(0.54 0.37 0.09)
+
+while getopts d:p:r flag
+do
+    case "${flag}" in
+        d) WORK_DIR=${OPTARG};;
+        p) PRIVACY_LEVEL=${OPTARG};;
+        r) MAKE_IID=true;;
+    esac
+done
+
+# check if workdir exists
+if [ -z "$WORK_DIR" ] || ! [ -d "$WORK_DIR" ]; then
+    echo "working directory ${WORK_DIR} does not exist. Creating and using: ${FALLBACK_WORK_DIR}"
+    mkdir -p $FALLBACK_WORK_DIR
+    WORK_DIR=$FALLBACK_WORK_DIR
+fi
+
+# check if privacy level is in defined set of levels
+PRIVACY_LEVELS=("no-dp" "relaxed" "individual-relaxed" "strict" "individual-strict")
+if ! [[ ${PRIVACY_LEVELS[@]} =~ $PRIVACY_LEVEL ]]; then
+    echo "privacy level ${PRIVACY_LEVEL} is not available."
+    exit 1
+fi
+
 TS=$(date '+%Y-%m-%d_%H:%M:%S');
-RUN_DIR="${WORK_DIR}/${TS}_${DATASET}"
-mkdir $RUN_DIR
+RUN_DIR="${WORK_DIR}/${DATASET}_${PRIVACY_LEVEL}"
+if [ "$MAKE_IID" = true ]; then
+    RUN_DIR="${RUN_DIR}_iid"
+fi
+RUN_DIR="${RUN_DIR}_${TS}"
+
+PYTHON_COMMAND=""
+case "${PRIVACY_LEVEL}" in
+    "no-dp")
+    PYTHON_COMMAND="python3 src/main.py --save-dir $RUN_DIR --dataset $DATASET --model $MODEL --rounds $ROUNDS --clients-per-round $CLIENTS_PER_ROUND --local-epochs $LOCAL_EPOCHS --batch-size $BATCH_SIZE --client-lr $CLIENT_LR --server-lr $SERVER_LR"
+    ;;
+    "relaxed")
+    PYTHON_COMMAND="python3 src/main.py --save-dir $RUN_DIR --dataset $DATASET --model $MODEL --budgets ${BUDGETS[-1]} --ratios 1.0 --rounds $ROUNDS --clients-per-round $CLIENTS_PER_ROUND --local-epochs $LOCAL_EPOCHS --batch-size $BATCH_SIZE --client-lr $CLIENT_LR --server-lr $SERVER_LR"
+    ;;
+    "individual-relaxed")
+    PYTHON_COMMAND="python3 src/main.py --save-dir $RUN_DIR --dataset $DATASET --model $MODEL --budgets ${BUDGETS[*]} --ratios ${INDIVIDUAL_RELAXED_BUDGET_DISTRIBUTION[*]} --rounds $ROUNDS --clients-per-round $CLIENTS_PER_ROUND --local-epochs $LOCAL_EPOCHS --batch-size $BATCH_SIZE --client-lr $CLIENT_LR --server-lr $SERVER_LR"
+    ;;
+    "individual-strict")
+    PYTHON_COMMAND="python3 src/main.py --save-dir $RUN_DIR --dataset $DATASET --model $MODEL --budgets ${BUDGETS[*]} --ratios ${INDIVIDUAL_STRICT_BUDGET_DISTRIBUTION[*]} --rounds $ROUNDS --clients-per-round $CLIENTS_PER_ROUND --local-epochs $LOCAL_EPOCHS --batch-size $BATCH_SIZE --client-lr $CLIENT_LR --server-lr $SERVER_LR"
+    ;;
+    "strict")
+    PYTHON_COMMAND="python3 src/main.py --save-dir $RUN_DIR --dataset $DATASET --model $MODEL --budgets ${BUDGETS[0]} --ratios 1.0 --rounds $ROUNDS --clients-per-round $CLIENTS_PER_ROUND --local-epochs $LOCAL_EPOCHS --batch-size $BATCH_SIZE --client-lr $CLIENT_LR --server-lr $SERVER_LR"
+    ;;
+esac
+
+if [ $PYTHON_COMMAND = "" ]; then
+    echo "something went wrong with the command generation."
+    exit 1
+fi
+
+if [ "$MAKE_IID" = true ]; then
+    PYTHON_COMMAND="$PYTHON_COMMAND --make-iid"
+fi
 
 echo "START"
 
-echo "Running on ${DATASET}. Privacy budgets are: ${BUDGETS[*]}. The directory where results will be stored is ${RUN_DIR}."
+mkdir $RUN_DIR
+echo $SLURM_JOB_ID > "${RUN_DIR}/slurm-job-id.txt"
 
-singularity exec --bind /work:/work --nv $CONTAINER_FILE bash -x -c \
+echo "Command: ${PYTHON_COMMAND}"
+
+singularity exec --bind /work:/work --nv $CONTAINER_FILE bash -c \
 "\
-cd $CODE_DIR && \
-python3 src/main.py --dir $RUN_DIR/no-dp --dataset $DATASET && \
-python3 src/main.py --dir $RUN_DIR/strict --dataset $DATASET --budgets ${BUDGETS[0]} --ratios 1.0 && \
-python3 src/main.py --dir $RUN_DIR/inidividual-strict --dataset $DATASET --budgets ${BUDGETS[*]} --ratios 0.54 0.37 0.09 && \
-python3 src/main.py --dir $RUN_DIR/individual-relaxed --dataset $DATASET --budgets ${BUDGETS[*]} --ratios 0.34 0.43 0.23 && \
-python3 src/main.py --dir $RUN_DIR/relaxed --dataset $DATASET --budgets ${BUDGETS[-1]} --ratios 1.0 \
+cd $CODE_DIR && $PYTHON_COMMAND\
 "
 
 echo "FINISHED"

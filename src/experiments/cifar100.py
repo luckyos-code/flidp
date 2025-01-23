@@ -1,3 +1,5 @@
+# ATTENTION: CIFAR100 EXPERIMENT CODE IS OUTDATED
+
 from pathlib import Path
 
 from . import *
@@ -5,7 +7,8 @@ from .helpers import create_budgets, get_sampling_rates_per_client
 from idputils import get_weights
 from train import train_without_dp, train_with_idp, save_train_results
 
-CIFAR_DELTA = 1e-4  # tff cifar dataset contains 500 clients
+# tff cifar dataset contains 500 clients
+CIFAR_DELTA = 1e-4 
 CIFAR_ROUNDS = 200
 CIFAR_CLIENTS_PER_ROUND = 100
 CIFAR_LOCAL_EPOCHS = 3

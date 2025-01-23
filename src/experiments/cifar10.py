@@ -6,11 +6,12 @@ from .helpers import make_clientdata_iid
 from .models import get_model
 from train import save_train_results, run_training
 
-
-CIFAR10_DIR = os.path.join(os.path.expanduser("~"), ".tff/cifar10")
+# tff cifar dataset contains 500 clients
+# CIFAR10_DIR = os.path.join(os.path.expanduser("~"), "datasets_custom/cifar10")
+CIFAR10_DIR = os.path.join(os.getcwd(), "datasets_custom/cifar10")
 IMAGE_SHAPE = (32, 32, 3)
 NUM_CLASSES = 10
-DELTA = 1e-4  # tff cifar dataset contains 500 clients
+DELTA = 1e-4
 RESCALE_FACTOR = 1/255.
 
 
@@ -95,6 +96,7 @@ def run_cifar10(save_dir, model, budgets, ratios, dp_level, rounds, clients_per_
     trained_weights.assign_weights_to(keras_model)
     tff_model = model_fn()
     trained_weights.assign_weights_to(tff_model)
+    
     save_train_results(
         save_dir=save_dir, 
         trained_tff_model=tff_model,
