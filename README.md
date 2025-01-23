@@ -7,7 +7,7 @@ TODO abstract
 ## Usage Instructions
 
 ### Software and Hardware Requirements
-* Python 3.10 or comparable (for using `spyhton`
+* Python 3.10 or comparable (for using `spyhton`)
 * our mode of operation as described below requires a Slurm-based computing cluster node with Singularity container support
 * alternatively one can change the scripts to run locally or using Docker (or any other equivalent) directly
 
