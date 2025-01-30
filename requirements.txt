@@ -1,7 +1,7 @@
-pandas
-dp-accounting
-tensorflow[and-cuda]
+pandas==2.2.2
+dp-accounting==0.4.3
+tensorflow[and-cuda]==2.14.1
 tensorflow-federated==0.73.0
-tensorflow-privacy
-click
-matplotlib
+tensorflow-privacy==0.9.0
+click==8.1.8
+matplotlib=3.10.0

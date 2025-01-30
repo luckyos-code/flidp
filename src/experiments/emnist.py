@@ -5,9 +5,10 @@ from .helpers import make_clientdata_iid
 from .models import get_model
 from train import save_train_results, run_training
 
+# 3,383 clients
 IMAGE_SHAPE = (28, 28, 1)
 NUM_CLASSES = 10
-DELTA = 1e-5
+DELTA = 1e-4
 RESCALE_FACTOR = 1/1.
 
 

@@ -2,29 +2,44 @@
 
 #SBATCH --job-name=flidp-emnist
 #SBATCH --partition=clara
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=16
-#SBATCH --time=1:00:00
 #SBATCH --gres=gpu:rtx2080ti:1
-#SBATCH --output=/home/sc.uni-leipzig.de/oe152msue/logs/%x-%j/stdout.out
-#SBATCH --error=/home/sc.uni-leipzig.de/oe152msue/logs/%x-%j/stderr.err
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --time=1-00:00:00
+#SBATCH --output=logs/%x-%j/stdout.out
+#SBATCH --error=logs/%x-%j/stderr.err
+#SBATCH --mail-type=FAIL
+
+# sample slurm run for iid and no-dp: sbatch emnist.sh -p no-dp -r
 
 set -x  # to print all the commands to stderr
 
-MODEL="simple-cnn"
-ROUNDS=100
-CLIENTS_PER_ROUND=50
-BATCH_SIZE=128
-LOCAL_EPOCHS=5
-CLIENT_LR=0.001
-SERVER_LR=1.0
-
-CODE_DIR=$HOME/flidp
-CONTAINER_FILE=$HOME/flidp_main.sif
+# parameters that change depending on dataset
 DATASET="emnist"
 BUDGETS=(1.0 2.0 3.0)
+CLIENTS_PER_ROUND=30
+
+# common paths
+CODE_DIR=$PWD
+CONTAINER_FILE=$PWD/flidp.sif
+FALLBACK_WORK_DIR=$PWD/results
+
+# common training parameters
+MODEL="simple-cnn"
+ROUNDS=420
+LOCAL_EPOCHS=15
+BATCH_SIZE=128
+CLIENT_LR=0.0005
+SERVER_LR=1.0
+
+# privacy distributions
 INDIVIDUAL_RELAXED_BUDGET_DISTRIBUTION=(0.34 0.43 0.23)
 INDIVIDUAL_STRICT_BUDGET_DISTRIBUTION=(0.54 0.37 0.09)
+
+## OPTIONAL: values for aldaghri test by hand as individual-strict run
+# BUDGETS=(0.6 99999999999999999999.0 99999999999999999999.0)
+# INDIVIDUAL_STRICT_BUDGET_DISTRIBUTION=(0.95 0.0 0.05)
 
 while getopts d:p:r flag
 do
@@ -36,9 +51,10 @@ do
 done
 
 # check if workdir exists
-if ! [ -d $WORK_DIR ]; then
-    echo "working directory ${WORK_DIR} does not exist."
-    exit 1
+if [ -z "$WORK_DIR" ] || ! [ -d "$WORK_DIR" ]; then
+    echo "working directory ${WORK_DIR} does not exist. Creating and using: ${FALLBACK_WORK_DIR}"
+    mkdir -p $FALLBACK_WORK_DIR
+    WORK_DIR=$FALLBACK_WORK_DIR
 fi
 
 # check if privacy level is in defined set of levels
@@ -49,10 +65,11 @@ if ! [[ ${PRIVACY_LEVELS[@]} =~ $PRIVACY_LEVEL ]]; then
 fi
 
 TS=$(date '+%Y-%m-%d_%H:%M:%S');
-RUN_DIR="${WORK_DIR}/${TS}_${DATASET}_${PRIVACY_LEVEL}"
+RUN_DIR="${WORK_DIR}/${DATASET}_${PRIVACY_LEVEL}"
 if [ "$MAKE_IID" = true ]; then
     RUN_DIR="${RUN_DIR}_iid"
 fi
+RUN_DIR="${RUN_DIR}_${TS}"
 
 PYTHON_COMMAND=""
 case "${PRIVACY_LEVEL}" in

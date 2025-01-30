@@ -1,0 +1,466 @@
+START
+Command: python3 src/main.py --save-dir /home/sc.uni-leipzig.de/ll95wyqa/projects/flidp/results/all-2025-01-22_18:03:55/cifar10_individual-relaxed_2025-01-22_20:22:15 --dataset cifar10 --model simple-cnn --budgets 10.0 20.0 30.0 --ratios 0.34 0.43 0.23 --rounds 420 --clients-per-round 30 --local-epochs 15 --batch-size 128 --client-lr 0.0005 --server-lr 1.0
+dp level was set to idp.
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ rescaling (Rescaling)       (None, 32, 32, 3)         0         
+                                                                 
+ conv2d (Conv2D)             (None, 30, 30, 32)        896       
+                                                                 
+ max_pooling2d (MaxPooling2  (None, 15, 15, 32)        0         
+ D)                                                              
+                                                                 
+ dropout (Dropout)           (None, 15, 15, 32)        0         
+                                                                 
+ conv2d_1 (Conv2D)           (None, 13, 13, 32)        9248      
+                                                                 
+ max_pooling2d_1 (MaxPoolin  (None, 6, 6, 32)          0         
+ g2D)                                                            
+                                                                 
+ dropout_1 (Dropout)         (None, 6, 6, 32)          0         
+                                                                 
+ conv2d_2 (Conv2D)           (None, 4, 4, 32)          9248      
+                                                                 
+ max_pooling2d_2 (MaxPoolin  (None, 2, 2, 32)          0         
+ g2D)                                                            
+                                                                 
+ dropout_2 (Dropout)         (None, 2, 2, 32)          0         
+                                                                 
+ flatten (Flatten)           (None, 128)               0         
+                                                                 
+ dense (Dense)               (None, 64)                8256      
+                                                                 
+ dropout_3 (Dropout)         (None, 64)                0         
+                                                                 
+ dense_1 (Dense)             (None, 10)                650       
+                                                                 
+=================================================================
+Total params: 28298 (110.54 KB)
+Trainable params: 28298 (110.54 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+None
+Round 0: OrderedDict([('sparse_categorical_accuracy', 0.0955), ('loss', 2.3071043), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.1, 'sum_stddev': 0.06991434}
+Round 1: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.1105171, 'sum_stddev': 0.077267304}
+Round 2: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.12214029, 'sum_stddev': 0.08539358}
+Round 3: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.1349859, 'sum_stddev': 0.0943745}
+Round 4: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.14918248, 'sum_stddev': 0.10429995}
+Round 5: OrderedDict([('sparse_categorical_accuracy', 0.0991), ('loss', 2.310938), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.16487215, 'sum_stddev': 0.11526928}
+Round 6: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.17752674, 'sum_stddev': 0.12411665}
+Round 7: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.1958399, 'sum_stddev': 0.13692017}
+Round 8: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.21192606, 'sum_stddev': 0.1481667}
+Round 9: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.23421453, 'sum_stddev': 0.16374955}
+Round 10: OrderedDict([('sparse_categorical_accuracy', 0.0999), ('loss', 2.3269846), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.2588471, 'sum_stddev': 0.18097124}
+Round 11: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.2860703, 'sum_stddev': 0.20000416}
+Round 12: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.30928665, 'sum_stddev': 0.21623573}
+Round 13: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.34181464, 'sum_stddev': 0.23897745}
+Round 14: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.37613106, 'sum_stddev': 0.26296955}
+Round 15: OrderedDict([('sparse_categorical_accuracy', 0.128), ('loss', 2.3053381), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.4156891, 'sum_stddev': 0.2906263}
+Round 16: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.44613832, 'sum_stddev': 0.31191468}
+Round 17: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.48402616, 'sum_stddev': 0.3384037}
+Round 18: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53493166, 'sum_stddev': 0.37399393}
+Round 19: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5810776, 'sum_stddev': 0.40625656}
+Round 20: OrderedDict([('sparse_categorical_accuracy', 0.137), ('loss', 2.3224938), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5356931, 'sum_stddev': 0.3745263}
+Round 21: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.56858116, 'sum_stddev': 0.39751977}
+Round 22: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55056006, 'sum_stddev': 0.38492045}
+Round 23: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5400628, 'sum_stddev': 0.37758133}
+Round 24: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.56115806, 'sum_stddev': 0.39232996}
+Round 25: OrderedDict([('sparse_categorical_accuracy', 0.1158), ('loss', 2.3013659), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5366275, 'sum_stddev': 0.37517956}
+Round 26: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5483725, 'sum_stddev': 0.38339102}
+Round 27: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55301464, 'sum_stddev': 0.38663653}
+Round 28: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5563145, 'sum_stddev': 0.38894364}
+Round 29: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5500678, 'sum_stddev': 0.38457626}
+Round 30: OrderedDict([('sparse_categorical_accuracy', 0.165), ('loss', 2.305797), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53059155, 'sum_stddev': 0.37095958}
+Round 31: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.56413704, 'sum_stddev': 0.3944127}
+Round 32: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54254, 'sum_stddev': 0.37931326}
+Round 33: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53968006, 'sum_stddev': 0.37731376}
+Round 34: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.570186, 'sum_stddev': 0.3986418}
+Round 35: OrderedDict([('sparse_categorical_accuracy', 0.1191), ('loss', 2.3169506), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5366643, 'sum_stddev': 0.3752053}
+Round 36: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54302084, 'sum_stddev': 0.37964943}
+Round 37: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.519922, 'sum_stddev': 0.36350006}
+Round 38: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55192846, 'sum_stddev': 0.38587713}
+Round 39: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5238152, 'sum_stddev': 0.36622196}
+Round 40: OrderedDict([('sparse_categorical_accuracy', 0.1485), ('loss', 2.2622542), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53251654, 'sum_stddev': 0.37230542}
+Round 41: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52922106, 'sum_stddev': 0.3700014}
+Round 42: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5340722, 'sum_stddev': 0.37339306}
+Round 43: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55555934, 'sum_stddev': 0.38841563}
+Round 44: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54719716, 'sum_stddev': 0.38256928}
+Round 45: OrderedDict([('sparse_categorical_accuracy', 0.1891), ('loss', 2.1911573), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5375402, 'sum_stddev': 0.3758177}
+Round 46: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51758796, 'sum_stddev': 0.3618682}
+Round 47: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52544475, 'sum_stddev': 0.36736122}
+Round 48: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53053033, 'sum_stddev': 0.37091678}
+Round 49: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54855347, 'sum_stddev': 0.38351753}
+Round 50: OrderedDict([('sparse_categorical_accuracy', 0.1125), ('loss', 2.296326), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5316836, 'sum_stddev': 0.37172312}
+Round 51: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5351574, 'sum_stddev': 0.37415177}
+Round 52: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5423574, 'sum_stddev': 0.3791856}
+Round 53: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5189449, 'sum_stddev': 0.36281693}
+Round 54: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5202932, 'sum_stddev': 0.36375955}
+Round 55: OrderedDict([('sparse_categorical_accuracy', 0.209), ('loss', 2.1638455), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53874606, 'sum_stddev': 0.37666076}
+Round 56: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5193011, 'sum_stddev': 0.36306596}
+Round 57: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52143216, 'sum_stddev': 0.36455587}
+Round 58: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5263169, 'sum_stddev': 0.36797097}
+Round 59: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53040236, 'sum_stddev': 0.37082732}
+Round 60: OrderedDict([('sparse_categorical_accuracy', 0.2219), ('loss', 2.137226), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53954756, 'sum_stddev': 0.37722114}
+Round 61: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52923554, 'sum_stddev': 0.37001154}
+Round 62: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52470523, 'sum_stddev': 0.3668442}
+Round 63: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5266708, 'sum_stddev': 0.36821842}
+Round 64: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5442907, 'sum_stddev': 0.38053727}
+Round 65: OrderedDict([('sparse_categorical_accuracy', 0.2509), ('loss', 2.0745232), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53585094, 'sum_stddev': 0.37463665}
+Round 66: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.522274, 'sum_stddev': 0.36514443}
+Round 67: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5151763, 'sum_stddev': 0.3601821}
+Round 68: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53046507, 'sum_stddev': 0.37087116}
+Round 69: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5236577, 'sum_stddev': 0.36611181}
+Round 70: OrderedDict([('sparse_categorical_accuracy', 0.2422), ('loss', 2.0652666), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5309709, 'sum_stddev': 0.3712248}
+Round 71: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53515786, 'sum_stddev': 0.3741521}
+Round 72: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54263777, 'sum_stddev': 0.37938163}
+Round 73: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5427854, 'sum_stddev': 0.37948483}
+Round 74: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53522223, 'sum_stddev': 0.3741971}
+Round 75: OrderedDict([('sparse_categorical_accuracy', 0.2646), ('loss', 2.0128136), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52622074, 'sum_stddev': 0.36790377}
+Round 76: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53227276, 'sum_stddev': 0.37213498}
+Round 77: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5441776, 'sum_stddev': 0.38045818}
+Round 78: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5371118, 'sum_stddev': 0.3755182}
+Round 79: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5491612, 'sum_stddev': 0.38394243}
+Round 80: OrderedDict([('sparse_categorical_accuracy', 0.2685), ('loss', 2.0210474), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5350922, 'sum_stddev': 0.37410617}
+Round 81: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.57346267, 'sum_stddev': 0.40093264}
+Round 82: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5285785, 'sum_stddev': 0.3695522}
+Round 83: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5300214, 'sum_stddev': 0.370561}
+Round 84: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53396606, 'sum_stddev': 0.37331885}
+Round 85: OrderedDict([('sparse_categorical_accuracy', 0.2546), ('loss', 2.0275705), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53028965, 'sum_stddev': 0.37074852}
+Round 86: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5509558, 'sum_stddev': 0.3851971}
+Round 87: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53397846, 'sum_stddev': 0.37332752}
+Round 88: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53397906, 'sum_stddev': 0.37332794}
+Round 89: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53389716, 'sum_stddev': 0.3732707}
+Round 90: OrderedDict([('sparse_categorical_accuracy', 0.2355), ('loss', 2.0523977), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5479843, 'sum_stddev': 0.3831196}
+Round 91: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5399042, 'sum_stddev': 0.37747043}
+Round 92: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.49344707, 'sum_stddev': 0.34499025}
+Round 93: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51388824, 'sum_stddev': 0.35928157}
+Round 94: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5350478, 'sum_stddev': 0.37407517}
+Round 95: OrderedDict([('sparse_categorical_accuracy', 0.2995), ('loss', 1.915992), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5581053, 'sum_stddev': 0.39019564}
+Round 96: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5496057, 'sum_stddev': 0.38425323}
+Round 97: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55808645, 'sum_stddev': 0.39018247}
+Round 98: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.536273, 'sum_stddev': 0.37493172}
+Round 99: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5410228, 'sum_stddev': 0.3782525}
+Round 100: OrderedDict([('sparse_categorical_accuracy', 0.2839), ('loss', 1.9252936), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.58188796, 'sum_stddev': 0.40682313}
+Round 101: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54933083, 'sum_stddev': 0.38406104}
+Round 102: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54452825, 'sum_stddev': 0.38070333}
+Round 103: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.56405765, 'sum_stddev': 0.39435717}
+Round 104: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55947614, 'sum_stddev': 0.39115405}
+Round 105: OrderedDict([('sparse_categorical_accuracy', 0.2319), ('loss', 2.0985081), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.56951237, 'sum_stddev': 0.39817083}
+Round 106: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55052125, 'sum_stddev': 0.3848933}
+Round 107: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5357248, 'sum_stddev': 0.37454847}
+Round 108: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52634907, 'sum_stddev': 0.36799347}
+Round 109: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5369663, 'sum_stddev': 0.37541646}
+Round 110: OrderedDict([('sparse_categorical_accuracy', 0.2052), ('loss', 2.1087544), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5416241, 'sum_stddev': 0.37867293}
+Round 111: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5326886, 'sum_stddev': 0.37242573}
+Round 112: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5265265, 'sum_stddev': 0.36811754}
+Round 113: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5255211, 'sum_stddev': 0.36741462}
+Round 114: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5182357, 'sum_stddev': 0.36232105}
+Round 115: OrderedDict([('sparse_categorical_accuracy', 0.2775), ('loss', 1.9594476), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5161607, 'sum_stddev': 0.36087036}
+Round 116: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5278817, 'sum_stddev': 0.369065}
+Round 117: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5238432, 'sum_stddev': 0.36624154}
+Round 118: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52345085, 'sum_stddev': 0.3659672}
+Round 119: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.528574, 'sum_stddev': 0.36954904}
+Round 120: OrderedDict([('sparse_categorical_accuracy', 0.2856), ('loss', 1.9205201), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5435456, 'sum_stddev': 0.38001633}
+Round 121: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5184299, 'sum_stddev': 0.36245683}
+Round 122: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52335066, 'sum_stddev': 0.36589715}
+Round 123: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52986586, 'sum_stddev': 0.37045223}
+Round 124: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5159018, 'sum_stddev': 0.36068934}
+Round 125: OrderedDict([('sparse_categorical_accuracy', 0.237), ('loss', 2.1152785), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50653046, 'sum_stddev': 0.35413742}
+Round 126: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5356719, 'sum_stddev': 0.37451148}
+Round 127: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52149373, 'sum_stddev': 0.3645989}
+Round 128: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51239336, 'sum_stddev': 0.35823643}
+Round 129: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5151025, 'sum_stddev': 0.36013052}
+Round 130: OrderedDict([('sparse_categorical_accuracy', 0.2668), ('loss', 1.9983397), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5318924, 'sum_stddev': 0.3718691}
+Round 131: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53631866, 'sum_stddev': 0.37496367}
+Round 132: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52662337, 'sum_stddev': 0.36818525}
+Round 133: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5279476, 'sum_stddev': 0.3691111}
+Round 134: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52606964, 'sum_stddev': 0.36779812}
+Round 135: OrderedDict([('sparse_categorical_accuracy', 0.2832), ('loss', 1.9971306), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52030134, 'sum_stddev': 0.36376524}
+Round 136: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5468479, 'sum_stddev': 0.38232508}
+Round 137: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53439236, 'sum_stddev': 0.3736169}
+Round 138: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54047745, 'sum_stddev': 0.37787125}
+Round 139: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55022824, 'sum_stddev': 0.38468844}
+Round 140: OrderedDict([('sparse_categorical_accuracy', 0.2942), ('loss', 1.9242103), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5369363, 'sum_stddev': 0.37539548}
+Round 141: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54032314, 'sum_stddev': 0.37776336}
+Round 142: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5461183, 'sum_stddev': 0.38181502}
+Round 143: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5633693, 'sum_stddev': 0.39387593}
+Round 144: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5322253, 'sum_stddev': 0.3721018}
+Round 145: OrderedDict([('sparse_categorical_accuracy', 0.2716), ('loss', 1.9731215), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5426891, 'sum_stddev': 0.3794175}
+Round 146: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55917174, 'sum_stddev': 0.39094123}
+Round 147: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53756917, 'sum_stddev': 0.37583795}
+Round 148: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5280471, 'sum_stddev': 0.36918065}
+Round 149: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.534069, 'sum_stddev': 0.37339082}
+Round 150: OrderedDict([('sparse_categorical_accuracy', 0.2927), ('loss', 1.9345969), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5479734, 'sum_stddev': 0.38311198}
+Round 151: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53740364, 'sum_stddev': 0.37572223}
+Round 152: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51558214, 'sum_stddev': 0.36046585}
+Round 153: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55317855, 'sum_stddev': 0.38675115}
+Round 154: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54344046, 'sum_stddev': 0.3799428}
+Round 155: OrderedDict([('sparse_categorical_accuracy', 0.2668), ('loss', 1.9825779), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51019394, 'sum_stddev': 0.35669872}
+Round 156: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5351217, 'sum_stddev': 0.3741268}
+Round 157: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5353226, 'sum_stddev': 0.37426728}
+Round 158: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52055264, 'sum_stddev': 0.36394095}
+Round 159: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5495994, 'sum_stddev': 0.3842488}
+Round 160: OrderedDict([('sparse_categorical_accuracy', 0.2754), ('loss', 1.9753051), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5385981, 'sum_stddev': 0.37655732}
+Round 161: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53283, 'sum_stddev': 0.3725246}
+Round 162: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5217693, 'sum_stddev': 0.36479154}
+Round 163: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5210403, 'sum_stddev': 0.3642819}
+Round 164: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5231225, 'sum_stddev': 0.36573765}
+Round 165: OrderedDict([('sparse_categorical_accuracy', 0.2634), ('loss', 1.9864964), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53358126, 'sum_stddev': 0.37304983}
+Round 166: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5339074, 'sum_stddev': 0.37327784}
+Round 167: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5372858, 'sum_stddev': 0.37563983}
+Round 168: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5366851, 'sum_stddev': 0.37521985}
+Round 169: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52862906, 'sum_stddev': 0.36958754}
+Round 170: OrderedDict([('sparse_categorical_accuracy', 0.2726), ('loss', 1.9504192), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52659523, 'sum_stddev': 0.36816558}
+Round 171: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53283715, 'sum_stddev': 0.3725296}
+Round 172: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5431358, 'sum_stddev': 0.37972984}
+Round 173: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5388189, 'sum_stddev': 0.37671167}
+Round 174: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5389555, 'sum_stddev': 0.37680718}
+Round 175: OrderedDict([('sparse_categorical_accuracy', 0.275), ('loss', 1.9801065), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54148644, 'sum_stddev': 0.37857667}
+Round 176: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53933704, 'sum_stddev': 0.37707394}
+Round 177: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52772427, 'sum_stddev': 0.36895496}
+Round 178: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5165805, 'sum_stddev': 0.36116385}
+Round 179: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5323924, 'sum_stddev': 0.37221864}
+Round 180: OrderedDict([('sparse_categorical_accuracy', 0.2715), ('loss', 1.9675965), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5258079, 'sum_stddev': 0.36761513}
+Round 181: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5496409, 'sum_stddev': 0.38427782}
+Round 182: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5395777, 'sum_stddev': 0.3772422}
+Round 183: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5257078, 'sum_stddev': 0.36754513}
+Round 184: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51417315, 'sum_stddev': 0.35948077}
+Round 185: OrderedDict([('sparse_categorical_accuracy', 0.282), ('loss', 1.9507096), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5237435, 'sum_stddev': 0.36617184}
+Round 186: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5213234, 'sum_stddev': 0.3644798}
+Round 187: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5320182, 'sum_stddev': 0.371957}
+Round 188: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5256025, 'sum_stddev': 0.36747155}
+Round 189: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51612747, 'sum_stddev': 0.36084712}
+Round 190: OrderedDict([('sparse_categorical_accuracy', 0.2794), ('loss', 1.9686779), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52393, 'sum_stddev': 0.36630222}
+Round 191: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5207869, 'sum_stddev': 0.36410472}
+Round 192: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5264105, 'sum_stddev': 0.36803645}
+Round 193: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5468852, 'sum_stddev': 0.3823512}
+Round 194: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5236357, 'sum_stddev': 0.36609644}
+Round 195: OrderedDict([('sparse_categorical_accuracy', 0.2714), ('loss', 1.96884), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55137914, 'sum_stddev': 0.3854931}
+Round 196: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5369041, 'sum_stddev': 0.37537295}
+Round 197: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54775596, 'sum_stddev': 0.38295996}
+Round 198: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54578626, 'sum_stddev': 0.38158286}
+Round 199: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55268174, 'sum_stddev': 0.3864038}
+Round 200: OrderedDict([('sparse_categorical_accuracy', 0.2679), ('loss', 1.9539219), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54367256, 'sum_stddev': 0.38010508}
+Round 201: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54984915, 'sum_stddev': 0.3844234}
+Round 202: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55285054, 'sum_stddev': 0.38652182}
+Round 203: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5209947, 'sum_stddev': 0.36425003}
+Round 204: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52628934, 'sum_stddev': 0.36795172}
+Round 205: OrderedDict([('sparse_categorical_accuracy', 0.2831), ('loss', 1.9330097), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5387487, 'sum_stddev': 0.37666258}
+Round 206: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5439023, 'sum_stddev': 0.38026568}
+Round 207: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54652137, 'sum_stddev': 0.3820968}
+Round 208: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5457554, 'sum_stddev': 0.38156128}
+Round 209: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5474661, 'sum_stddev': 0.3827573}
+Round 210: OrderedDict([('sparse_categorical_accuracy', 0.2956), ('loss', 1.9223742), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5214492, 'sum_stddev': 0.3645678}
+Round 211: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5563291, 'sum_stddev': 0.3889538}
+Round 212: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.56413424, 'sum_stddev': 0.39441073}
+Round 213: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5590672, 'sum_stddev': 0.39086813}
+Round 214: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53207797, 'sum_stddev': 0.37199882}
+Round 215: OrderedDict([('sparse_categorical_accuracy', 0.2656), ('loss', 1.9668838), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5443673, 'sum_stddev': 0.38059083}
+Round 216: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53387654, 'sum_stddev': 0.37325627}
+Round 217: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5192413, 'sum_stddev': 0.36302412}
+Round 218: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54497457, 'sum_stddev': 0.3810154}
+Round 219: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5440013, 'sum_stddev': 0.3803349}
+Round 220: OrderedDict([('sparse_categorical_accuracy', 0.2578), ('loss', 1.9719539), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53085995, 'sum_stddev': 0.37114725}
+Round 221: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5458953, 'sum_stddev': 0.3816591}
+Round 222: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.547603, 'sum_stddev': 0.38285303}
+Round 223: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5187707, 'sum_stddev': 0.3626951}
+Round 224: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5187858, 'sum_stddev': 0.36270565}
+Round 225: OrderedDict([('sparse_categorical_accuracy', 0.2835), ('loss', 1.9207988), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.4998528, 'sum_stddev': 0.3494688}
+Round 226: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53395414, 'sum_stddev': 0.3733105}
+Round 227: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5264216, 'sum_stddev': 0.3680442}
+Round 228: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53608066, 'sum_stddev': 0.37479725}
+Round 229: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5328201, 'sum_stddev': 0.37251768}
+Round 230: OrderedDict([('sparse_categorical_accuracy', 0.2875), ('loss', 1.8966945), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5224906, 'sum_stddev': 0.3652959}
+Round 231: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53307635, 'sum_stddev': 0.37269682}
+Round 232: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5433619, 'sum_stddev': 0.37988788}
+Round 233: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5520115, 'sum_stddev': 0.3859352}
+Round 234: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5310294, 'sum_stddev': 0.3712657}
+Round 235: OrderedDict([('sparse_categorical_accuracy', 0.2904), ('loss', 1.9089289), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5441788, 'sum_stddev': 0.380459}
+Round 236: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54228985, 'sum_stddev': 0.37913838}
+Round 237: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52494, 'sum_stddev': 0.36700836}
+Round 238: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52487963, 'sum_stddev': 0.36696613}
+Round 239: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5437668, 'sum_stddev': 0.38017097}
+Round 240: OrderedDict([('sparse_categorical_accuracy', 0.2877), ('loss', 1.874418), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54245615, 'sum_stddev': 0.37925464}
+Round 241: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54377276, 'sum_stddev': 0.38017514}
+Round 242: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54751575, 'sum_stddev': 0.38279203}
+Round 243: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5505917, 'sum_stddev': 0.38494256}
+Round 244: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.56408405, 'sum_stddev': 0.39437565}
+Round 245: OrderedDict([('sparse_categorical_accuracy', 0.2812), ('loss', 1.9140561), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.56299394, 'sum_stddev': 0.39361352}
+Round 246: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5625106, 'sum_stddev': 0.3932756}
+Round 247: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54822654, 'sum_stddev': 0.38328898}
+Round 248: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5484475, 'sum_stddev': 0.38344344}
+Round 249: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.55017525, 'sum_stddev': 0.3846514}
+Round 250: OrderedDict([('sparse_categorical_accuracy', 0.311), ('loss', 1.845065), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53052324, 'sum_stddev': 0.37091184}
+Round 251: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5253977, 'sum_stddev': 0.36732835}
+Round 252: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5198678, 'sum_stddev': 0.36346212}
+Round 253: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5564741, 'sum_stddev': 0.3890552}
+Round 254: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5493503, 'sum_stddev': 0.38407466}
+Round 255: OrderedDict([('sparse_categorical_accuracy', 0.2753), ('loss', 1.9670893), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5485534, 'sum_stddev': 0.3835175}
+Round 256: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5438095, 'sum_stddev': 0.3802008}
+Round 257: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5489959, 'sum_stddev': 0.38382688}
+Round 258: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5237561, 'sum_stddev': 0.36618063}
+Round 259: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5133718, 'sum_stddev': 0.3589205}
+Round 260: OrderedDict([('sparse_categorical_accuracy', 0.2828), ('loss', 1.9126422), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5320761, 'sum_stddev': 0.3719975}
+Round 261: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5413879, 'sum_stddev': 0.3785078}
+Round 262: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52230155, 'sum_stddev': 0.36516368}
+Round 263: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53684866, 'sum_stddev': 0.3753342}
+Round 264: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52542627, 'sum_stddev': 0.3673483}
+Round 265: OrderedDict([('sparse_categorical_accuracy', 0.2807), ('loss', 1.921451), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5271117, 'sum_stddev': 0.36852667}
+Round 266: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52078086, 'sum_stddev': 0.36410052}
+Round 267: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5367969, 'sum_stddev': 0.37529802}
+Round 268: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52256286, 'sum_stddev': 0.36534637}
+Round 269: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52400696, 'sum_stddev': 0.36635602}
+Round 270: OrderedDict([('sparse_categorical_accuracy', 0.2767), ('loss', 1.9454572), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53943676, 'sum_stddev': 0.37714365}
+Round 271: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52621496, 'sum_stddev': 0.36789972}
+Round 272: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52063155, 'sum_stddev': 0.36399612}
+Round 273: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5263659, 'sum_stddev': 0.36800525}
+Round 274: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5308688, 'sum_stddev': 0.37115344}
+Round 275: OrderedDict([('sparse_categorical_accuracy', 0.2673), ('loss', 1.9868191), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5387458, 'sum_stddev': 0.3766606}
+Round 276: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5366248, 'sum_stddev': 0.37517768}
+Round 277: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52235794, 'sum_stddev': 0.3652031}
+Round 278: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54711217, 'sum_stddev': 0.38250986}
+Round 279: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5046597, 'sum_stddev': 0.35282952}
+Round 280: OrderedDict([('sparse_categorical_accuracy', 0.2906), ('loss', 1.9188565), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5348825, 'sum_stddev': 0.37395957}
+Round 281: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53585225, 'sum_stddev': 0.37463757}
+Round 282: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54532176, 'sum_stddev': 0.38125813}
+Round 283: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5567966, 'sum_stddev': 0.38928068}
+Round 284: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54085, 'sum_stddev': 0.3781317}
+Round 285: OrderedDict([('sparse_categorical_accuracy', 0.2909), ('loss', 1.9075022), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5248592, 'sum_stddev': 0.36695185}
+Round 286: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54627603, 'sum_stddev': 0.38192528}
+Round 287: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5174712, 'sum_stddev': 0.36178657}
+Round 288: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5430262, 'sum_stddev': 0.3796532}
+Round 289: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5145375, 'sum_stddev': 0.35973552}
+Round 290: OrderedDict([('sparse_categorical_accuracy', 0.2865), ('loss', 1.9019276), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5258502, 'sum_stddev': 0.3676447}
+Round 291: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52759117, 'sum_stddev': 0.36886188}
+Round 292: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5460414, 'sum_stddev': 0.38176125}
+Round 293: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5190873, 'sum_stddev': 0.36291647}
+Round 294: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5139361, 'sum_stddev': 0.35931504}
+Round 295: OrderedDict([('sparse_categorical_accuracy', 0.2756), ('loss', 1.9405894), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5471847, 'sum_stddev': 0.38256058}
+Round 296: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5076126, 'sum_stddev': 0.35489398}
+Round 297: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52423036, 'sum_stddev': 0.3665122}
+Round 298: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5398544, 'sum_stddev': 0.37743565}
+Round 299: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5345807, 'sum_stddev': 0.37374857}
+Round 300: OrderedDict([('sparse_categorical_accuracy', 0.2806), ('loss', 1.9410074), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5242076, 'sum_stddev': 0.3664963}
+Round 301: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5276263, 'sum_stddev': 0.36888644}
+Round 302: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5293072, 'sum_stddev': 0.37006164}
+Round 303: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51887286, 'sum_stddev': 0.36276653}
+Round 304: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5259382, 'sum_stddev': 0.36770624}
+Round 305: OrderedDict([('sparse_categorical_accuracy', 0.3015), ('loss', 1.8886982), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52087665, 'sum_stddev': 0.36416748}
+Round 306: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5269769, 'sum_stddev': 0.3684324}
+Round 307: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5266234, 'sum_stddev': 0.3681853}
+Round 308: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51728654, 'sum_stddev': 0.36165747}
+Round 309: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5313334, 'sum_stddev': 0.37147823}
+Round 310: OrderedDict([('sparse_categorical_accuracy', 0.2767), ('loss', 1.9283031), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5208639, 'sum_stddev': 0.36415857}
+Round 311: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50980496, 'sum_stddev': 0.35642678}
+Round 312: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5090437, 'sum_stddev': 0.35589454}
+Round 313: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51462024, 'sum_stddev': 0.35979337}
+Round 314: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51433504, 'sum_stddev': 0.35959396}
+Round 315: OrderedDict([('sparse_categorical_accuracy', 0.2911), ('loss', 1.8991011), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53071785, 'sum_stddev': 0.37104788}
+Round 316: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5005279, 'sum_stddev': 0.3499408}
+Round 317: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5287623, 'sum_stddev': 0.36968067}
+Round 318: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53051805, 'sum_stddev': 0.3709082}
+Round 319: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.514161, 'sum_stddev': 0.35947227}
+Round 320: OrderedDict([('sparse_categorical_accuracy', 0.2859), ('loss', 1.9296199), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5473916, 'sum_stddev': 0.3827052}
+Round 321: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5214662, 'sum_stddev': 0.36457965}
+Round 322: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53861815, 'sum_stddev': 0.37657133}
+Round 323: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52604234, 'sum_stddev': 0.36777905}
+Round 324: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5193988, 'sum_stddev': 0.36313426}
+Round 325: OrderedDict([('sparse_categorical_accuracy', 0.2675), ('loss', 1.9775873), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5116335, 'sum_stddev': 0.3577052}
+Round 326: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53445524, 'sum_stddev': 0.37366086}
+Round 327: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5360601, 'sum_stddev': 0.3747829}
+Round 328: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5230416, 'sum_stddev': 0.36568108}
+Round 329: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5200948, 'sum_stddev': 0.36362085}
+Round 330: OrderedDict([('sparse_categorical_accuracy', 0.2837), ('loss', 1.9588645), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5023568, 'sum_stddev': 0.35121948}
+Round 331: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.531277, 'sum_stddev': 0.3714388}
+Round 332: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5222444, 'sum_stddev': 0.36512372}
+Round 333: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5408993, 'sum_stddev': 0.37816617}
+Round 334: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5250648, 'sum_stddev': 0.36709562}
+Round 335: OrderedDict([('sparse_categorical_accuracy', 0.2482), ('loss', 2.04812), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5203966, 'sum_stddev': 0.36383185}
+Round 336: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52835286, 'sum_stddev': 0.36939442}
+Round 337: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5105933, 'sum_stddev': 0.35697794}
+Round 338: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5289622, 'sum_stddev': 0.36982045}
+Round 339: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5349167, 'sum_stddev': 0.37398347}
+Round 340: OrderedDict([('sparse_categorical_accuracy', 0.2887), ('loss', 1.9157691), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5042372, 'sum_stddev': 0.3525341}
+Round 341: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.515545, 'sum_stddev': 0.3604399}
+Round 342: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5150185, 'sum_stddev': 0.3600718}
+Round 343: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51491994, 'sum_stddev': 0.36000288}
+Round 344: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.4991808, 'sum_stddev': 0.34899896}
+Round 345: OrderedDict([('sparse_categorical_accuracy', 0.2488), ('loss', 1.9870777), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5068856, 'sum_stddev': 0.3543857}
+Round 346: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.4965252, 'sum_stddev': 0.3471423}
+Round 347: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50393164, 'sum_stddev': 0.3523205}
+Round 348: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50749314, 'sum_stddev': 0.35481048}
+Round 349: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5341974, 'sum_stddev': 0.3734806}
+Round 350: OrderedDict([('sparse_categorical_accuracy', 0.2818), ('loss', 1.9119892), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5263905, 'sum_stddev': 0.36802244}
+Round 351: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5005117, 'sum_stddev': 0.34992945}
+Round 352: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53153986, 'sum_stddev': 0.3716226}
+Round 353: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.4968758, 'sum_stddev': 0.34738743}
+Round 354: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51246184, 'sum_stddev': 0.35828432}
+Round 355: OrderedDict([('sparse_categorical_accuracy', 0.2717), ('loss', 1.9612217), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51553655, 'sum_stddev': 0.36043397}
+Round 356: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50771195, 'sum_stddev': 0.35496345}
+Round 357: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5123073, 'sum_stddev': 0.35817626}
+Round 358: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.49368575, 'sum_stddev': 0.34515715}
+Round 359: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5261472, 'sum_stddev': 0.36785233}
+Round 360: OrderedDict([('sparse_categorical_accuracy', 0.2442), ('loss', 1.970994), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5134719, 'sum_stddev': 0.3589905}
+Round 361: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5296196, 'sum_stddev': 0.37028003}
+Round 362: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5332059, 'sum_stddev': 0.37278742}
+Round 363: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5126086, 'sum_stddev': 0.3583869}
+Round 364: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50363433, 'sum_stddev': 0.35211262}
+Round 365: OrderedDict([('sparse_categorical_accuracy', 0.2679), ('loss', 1.9492035), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5209924, 'sum_stddev': 0.3642484}
+Round 366: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53359824, 'sum_stddev': 0.3730617}
+Round 367: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.53270274, 'sum_stddev': 0.3724356}
+Round 368: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51886857, 'sum_stddev': 0.36276352}
+Round 369: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51767707, 'sum_stddev': 0.36193052}
+Round 370: OrderedDict([('sparse_categorical_accuracy', 0.2853), ('loss', 1.9150463), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54710877, 'sum_stddev': 0.3825075}
+Round 371: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5183356, 'sum_stddev': 0.3623909}
+Round 372: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5387945, 'sum_stddev': 0.37669465}
+Round 373: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5439815, 'sum_stddev': 0.3803211}
+Round 374: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5282258, 'sum_stddev': 0.36930558}
+Round 375: OrderedDict([('sparse_categorical_accuracy', 0.3007), ('loss', 1.8585397), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5297642, 'sum_stddev': 0.37038115}
+Round 376: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5365909, 'sum_stddev': 0.37515396}
+Round 377: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50375676, 'sum_stddev': 0.3521982}
+Round 378: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5105985, 'sum_stddev': 0.35698158}
+Round 379: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.49360067, 'sum_stddev': 0.34509766}
+Round 380: OrderedDict([('sparse_categorical_accuracy', 0.3082), ('loss', 1.8462226), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.54508346, 'sum_stddev': 0.3810915}
+Round 381: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.49937415, 'sum_stddev': 0.34913415}
+Round 382: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5066057, 'sum_stddev': 0.35419002}
+Round 383: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51794183, 'sum_stddev': 0.36211562}
+Round 384: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.49476683, 'sum_stddev': 0.34591296}
+Round 385: OrderedDict([('sparse_categorical_accuracy', 0.2967), ('loss', 1.8765283), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5022929, 'sum_stddev': 0.35117474}
+Round 386: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5087284, 'sum_stddev': 0.3556741}
+Round 387: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5199107, 'sum_stddev': 0.36349213}
+Round 388: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50083387, 'sum_stddev': 0.3501547}
+Round 389: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5072956, 'sum_stddev': 0.35467237}
+Round 390: OrderedDict([('sparse_categorical_accuracy', 0.283), ('loss', 1.9176261), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51320595, 'sum_stddev': 0.35880455}
+Round 391: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.523006, 'sum_stddev': 0.36565623}
+Round 392: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50448924, 'sum_stddev': 0.35271034}
+Round 393: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.52290744, 'sum_stddev': 0.3655873}
+Round 394: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5311048, 'sum_stddev': 0.37131843}
+Round 395: OrderedDict([('sparse_categorical_accuracy', 0.3169), ('loss', 1.8528928), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50449544, 'sum_stddev': 0.35271466}
+Round 396: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5096944, 'sum_stddev': 0.35634947}
+Round 397: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5187175, 'sum_stddev': 0.36265793}
+Round 398: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5216383, 'sum_stddev': 0.36469996}
+Round 399: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50723994, 'sum_stddev': 0.35463345}
+Round 400: OrderedDict([('sparse_categorical_accuracy', 0.2898), ('loss', 1.895259), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.4838474, 'sum_stddev': 0.33827874}
+Round 401: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5118461, 'sum_stddev': 0.35785386}
+Round 402: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.48902452, 'sum_stddev': 0.34189826}
+Round 403: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5058172, 'sum_stddev': 0.35363874}
+Round 404: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.500565, 'sum_stddev': 0.3499667}
+Round 405: OrderedDict([('sparse_categorical_accuracy', 0.3084), ('loss', 1.8610047), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.4999185, 'sum_stddev': 0.34951472}
+Round 406: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.49599624, 'sum_stddev': 0.3467725}
+Round 407: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5198693, 'sum_stddev': 0.36346322}
+Round 408: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5107337, 'sum_stddev': 0.3570761}
+Round 409: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51369953, 'sum_stddev': 0.35914963}
+Round 410: OrderedDict([('sparse_categorical_accuracy', 0.262), ('loss', 2.0118914), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50972885, 'sum_stddev': 0.35637358}
+Round 411: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.49949464, 'sum_stddev': 0.3492184}
+Round 412: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5191778, 'sum_stddev': 0.36297974}
+Round 413: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5098538, 'sum_stddev': 0.3564609}
+Round 414: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5301192, 'sum_stddev': 0.37062934}
+Round 415: OrderedDict([('sparse_categorical_accuracy', 0.2702), ('loss', 1.9599004), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51681566, 'sum_stddev': 0.36132827}
+Round 416: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.5213058, 'sum_stddev': 0.3644675}
+Round 417: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50006545, 'sum_stddev': 0.34961745}
+Round 418: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.50652564, 'sum_stddev': 0.35413405}
+Round 419: {} {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.51751804, 'sum_stddev': 0.36181933}
+Round 419: OrderedDict([('sparse_categorical_accuracy', 0.2649), ('loss', 1.9746794), ('num_examples', 10000), ('num_batches', 79)]) {'noise_multiplier_after_adaptive_clipping': 0.6991434, 'sum_clipping_norm': 0.49588856, 'sum_stddev': 0.3466972}
+FINISHED

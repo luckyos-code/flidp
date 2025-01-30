@@ -11,8 +11,10 @@ from idputils import get_weights
 from train import run_training, save_train_results
 from .models import get_model
 
-SVHN_DIR = os.path.join(os.path.expanduser("~"), ".tff/svhn")
-DELTA = 1e-4  # I created the dataset with 725 clients
+# I created the dataset with 725 clients
+# SVHN_DIR = os.path.join(os.path.expanduser("~"), "datasets_custom/svhn")
+SVHN_DIR = os.path.join(os.getcwd(), "datasets_custom/svhn")
+DELTA = 1e-4
 IMAGE_SHAPE = (32, 32, 3)
 NUM_CLASSES = 10
 RESCALE_FACTOR = 1/255.
@@ -75,7 +77,7 @@ def run_svhn(save_dir, model, budgets, ratios, dp_level, rounds, clients_per_rou
 
     train_ds, test_ds = _get_dataset(local_epochs=local_epochs, batch_size=batch_size)
     client_optimizer_fn = lambda: tf.keras.optimizers.Adam(client_lr)
-    server_optimizer_fn = lambda: tf.keras.optimizers.SGD(server_lr, momentum=0.9)
+    server_optimizer_fn = lambda: tf.keras.optimizers.SGD(server_lr)
     
     trained_weights, train_history = run_training(
         train_ds=train_ds,
